@@ -1,0 +1,127 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table de Paquetage</title>
+    <link rel="stylesheet" href="./css/table.css">
+</head>
+<body>
+    <script src="./js/logique.js"></script>
+    <h1>
+        Table de Paquetage
+    </h1>
+    <div>
+        <div>
+            <h2>Ancienneté</h2>
+           <input type="number" name="anciennete" id="anciennete" min="1" max="10" value="1">
+        </div>
+
+        <div>
+            <h2>Relation avec l'Économe</h2>
+            <select name="econome" id="econome">
+                <option value="positive">Positive</option>
+                <option value="neutre" selected>Neutre</option>
+                <option value="negative">Négative</option>
+            </select>
+        </div>
+        <div class="content">
+           <div>
+            <h2>Dé 20</h2>
+                <fieldset id="de20">
+                    <ul>
+                        <li>
+                            <input type="radio" value="corps" name="de20">
+                            <label for="corps">Armes au Corps à Corps</label>
+                        </li>
+                        <li>
+                            <input type="radio" value="distance" name="de20">
+                            <label for="distance">Armes à Distance</label>
+                        </li>
+                        <li>
+                            <input type="radio" value="armure" name="de20">
+                            <label for="armure">Armures</label>
+                        </li>
+                        <li>
+                            <input type="radio" value="equipement" name="de20">
+                            <label for="equipement">Nourriture & Équipement</label>
+                        </li>
+                    </ul>
+                </fieldset>
+        </div>
+        <div>
+            <h2>Dé 12</h2>
+                <fieldset id="de12">
+                    <ul>
+                        <li>
+                            <input type="radio" value="corps" name="de12">
+                            <label for="corps">Armes au Corps à Corps</label>
+                        </li>
+                        <li>
+                            <input type="radio" value="distance" name="de12">
+                            <label for="distance">Armes à Distance</label>
+                        </li>
+                        <li>
+                            <input type="radio" value="armure" name="de12">
+                            <label for="armure">Armures</label>                            
+                        </li>
+                        <li>
+                            <input type="radio" value="equipement" name="de12">
+                            <label for="equipement">Nourriture & Équipement</label>
+                        </li>
+                    </ul>
+                </fieldset>
+        </div>
+        <div>
+            <h2>Dé 10</h2>
+                <fieldset id="de10">
+                    <ul>
+                        <li>
+                            <input type="radio" value="corps" name="de10">
+                            <label for="corps">Armes au Corps à Corps</label>
+                        </li>
+                        <li>
+                            <input type="radio" value="distance" name="de10">
+                            <label for="distance">Armes à Distance</label>
+                        </li>
+                        <li>
+                            <input type="radio" value="armure" name="de10">
+                            <label for="armure">Armures</label>
+                        </li>
+                        <li>
+                            <input type="radio" value="equipement" name="de10">
+                            <label for="equipement">Nourriture & Équipement</label>
+                        </li>
+                    </ul>
+                </fieldset>
+        </div>
+        <div>
+            <h2>Dé 8</h2>
+                <fieldset id="de8">
+                    <ul>
+                        <li>
+                            <input type="radio" value="corps" name="de8">
+                            <label for="corps">Armes au Corps à Corps</label>
+                        </li>
+                        <li>
+                            <input type="radio" value="distance" name="de8">
+                            <label for="distance">Armes à Distance</label>
+                        </li>
+                        <li>
+                            <input type="radio" value="armure" name="de8">
+                            <label for="armure">Armures</label>
+                        </li>
+                        <li>
+                            <input type="radio" value="equipement" name="de8">
+                            <label for="equipement">Nourriture & Équipement</label>
+                        </li>
+                    </ul>
+                </fieldset>
+        </div>  
+        </div>
+       
+    </div>
+    <br>
+    <button>Effectuer tirage</button>
+</body>
+</html>
