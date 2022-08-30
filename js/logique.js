@@ -287,32 +287,48 @@ function getExperience () {
  */
 function getTablesToRoll (dicesDetail) {
     return {
-        dice20: TABLE_DICTIONNARY[dicesDetail.dice20],
-        dice12: TABLE_DICTIONNARY[dicesDetail.dice12],
-        dice10: TABLE_DICTIONNARY[dicesDetail.dice10],
-        dice8: TABLE_DICTIONNARY[dicesDetail.dice8]
+        dice20: {
+            table: TABLE_DICTIONNARY[dicesDetail.dice20],
+            length: TABLE_DICTIONNARY[dicesDetail.dice20].length
+        },
+        dice12: {
+            table: TABLE_DICTIONNARY[dicesDetail.dice12],
+            length: TABLE_DICTIONNARY[dicesDetail.dice12].length
+        },
+        dice10: {
+            table: TABLE_DICTIONNARY[dicesDetail.dice10],
+            length: TABLE_DICTIONNARY[dicesDetail.dice10].length
+        },
+        dice8: {
+            table: TABLE_DICTIONNARY[dicesDetail.dice8],
+            length: TABLE_DICTIONNARY[dicesDetail.dice8].length
+        }
     }
 }
 
-function generateFourRandomNumbers (experience) {
+function generateFourRandomNumbers () {
     return {
-        dice20: Math.floor(Math.random() * (20 - 2 + 1 + experience)) + 2,
-        dice12: Math.floor(Math.random() * (12 - 2 + 1 + experience)) + 2,
-        dice10: Math.floor(Math.random() * (10 - 2 + 1 + experience)) + 2,
-        dice8: Math.floor(Math.random() * (8 - 2 + 1 + experience)) + 2
+        dice20: Math.floor(Math.random() * (20 - 2 + 1)) + 2,
+        dice12: Math.floor(Math.random() * (12 - 2 + 1)) + 2,
+        dice10: Math.floor(Math.random() * (10 - 2 + 1)) + 2,
+        dice8: Math.floor(Math.random() * (8 - 2 + 1)) + 2
     }
 }
 
 function main() {
     const pageDices = initDices();
     const tablesToRoll = getTablesToRoll(pageDices);
+    console.log(Object.entries(tablesToRoll));
     const experience = getExperience();
-    const randomNumbers = generateFourRandomNumbers(experience);
+    // console.log('Experience: ', experience);
+    const randomNumbers = generateFourRandomNumbers();
+    // console.log(randomNumbers);
     return [
-        tablesToRoll.dice20[randomNumbers.dice20],
-        tablesToRoll.dice12[randomNumbers.dice12],
-        tablesToRoll.dice10[randomNumbers.dice10],
-        tablesToRoll.dice8[randomNumbers.dice8]
+        tablesToRoll.dice20.table[Math.max(randomNumbers.dice20 + experience, tablesToRoll.dice20.length)],
+        tablesToRoll.dice12.table[Math.max(randomNumbers.dice12 + experience, tablesToRoll.dice12.length)],
+        tablesToRoll.dice10.table[Math.max(randomNumbers.dice10 + experience, tablesToRoll.dice10.length)],
+        tablesToRoll.dice8.table[Math.max(randomNumbers.dice8 + experience, tablesToRoll.dice8.length)]
     ]
 }
 
+console.log(main());

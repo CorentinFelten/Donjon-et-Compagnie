@@ -126,9 +126,6 @@ class Armor extends Equipement {
 }
 
 
-
-
-
 export {
     Item,
     SpecialItem,
