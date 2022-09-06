@@ -318,17 +318,21 @@ function generateFourRandomNumbers () {
 function main() {
     const pageDices = initDices();
     const tablesToRoll = getTablesToRoll(pageDices);
-    console.log(Object.entries(tablesToRoll));
     const experience = getExperience();
-    // console.log('Experience: ', experience);
+    console.log('Experience: ', experience);
     const randomNumbers = generateFourRandomNumbers();
-    // console.log(randomNumbers);
-    return [
-        tablesToRoll.dice20.table[Math.max(randomNumbers.dice20 + experience, tablesToRoll.dice20.length)],
-        tablesToRoll.dice12.table[Math.max(randomNumbers.dice12 + experience, tablesToRoll.dice12.length)],
-        tablesToRoll.dice10.table[Math.max(randomNumbers.dice10 + experience, tablesToRoll.dice10.length)],
-        tablesToRoll.dice8.table[Math.max(randomNumbers.dice8 + experience, tablesToRoll.dice8.length)]
-    ]
+    console.log('Random numbers: ', randomNumbers);
+
+    const finalArray =  [
+        tablesToRoll.dice20.table[Math.min(randomNumbers.dice20 + experience, tablesToRoll.dice20.length - 1)],
+        tablesToRoll.dice12.table[Math.min(randomNumbers.dice12 + experience, tablesToRoll.dice12.length - 1)],
+        tablesToRoll.dice10.table[Math.min(randomNumbers.dice10 + experience, tablesToRoll.dice10.length - 1)],
+        tablesToRoll.dice8.table[Math.min(randomNumbers.dice8 + experience, tablesToRoll.dice8.length - 1)]
+    ];
+
+    console.log(finalArray);
+
+    return finalArray
 }
 
-console.log(main());
+document.getElementById('run').onclick() = main();
