@@ -410,3 +410,5 @@ function main() {
 
 document.getElementById('run').onclick = writeRoll;
 document.getElementById('reset').onclick = reset;
+
+// run npx live-server in folder to start
