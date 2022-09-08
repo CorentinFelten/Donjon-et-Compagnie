@@ -8,7 +8,8 @@ import {
     DistanceWeaponWithAmmo,
     Armor,
     SPECIAL_WEAPON_ATTRIBUTES,
-    UNIQUE_ITEMS_BONUSES
+    UNIQUE_ITEMS_BONUSES,
+    TYPES
  } from "./weapons.js";
 
 
@@ -277,7 +278,15 @@ function initDices () {
 }
 
 function getExperience () {
-    return Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+    let experience;
+    try {
+        experience = Number(document.getElementById('anciennete').value); 
+        console.log('Experience found: ', experience);
+    } catch {
+        experience = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+        console.log('No experience found. Randomly generated: ', experience);
+    }
+    return experience;
 }
 
 /**
@@ -315,11 +324,74 @@ function generateFourRandomNumbers () {
     }
 }
 
+function reset () {
+    document.getElementById('anciennete').value = 1;
+    document.getElementById('econome').value = 'neutre';
+}
+
+function getManagerRelation () {
+    const conv = {
+        'positive': 1,
+        'neutre': 0,
+        'negative': -1
+    };
+    return conv[document.getElementById('econome').value];
+}
+
+function writeRoll () {
+    const finalArray = main();
+    const toWrite = [];
+    finalArray.map(entry => {
+        if (Array.isArray(entry)) {
+            entry.map(subEntry => {
+                switch(subEntry.type) {
+                    case TYPES.specialEquipement:
+                        console.log('Special equipment found');
+                        toWrite.push(`Équipement spécial : ${subEntry.name}, Dé : dé ${subEntry.dice}, Description: ${subEntry.extra}`); 
+                    break;
+                    case TYPES.equipement:
+                        console.log('Equipment found');
+                        toWrite.push(`Équipement : ${subEntry.name}, Dé : dé ${subEntry.dice}`); 
+                    break;
+                    case TYPES.item:
+                        console.log('Item found');
+                        toWrite.push(`Objet : ${subEntry.name}`); 
+                    break;
+                    case TYPES.specialItem:
+                        console.log('Special item found');
+                        toWrite.push(`Objet spécial : ${subEntry.name}, Attributs : ${subEntry.attributes}`); 
+                    break;
+                }
+            })
+        } else {
+            switch(entry.type) {
+                case TYPES.armor:
+                    console.log('Armor found');
+                    toWrite.push(`Armure : ${entry.name}, Protection : dé ${entry.dice}`); 
+                break;
+                case TYPES.distanceWeapon:
+                    console.log('Distance weapon found');
+                    toWrite.push(`Arme à distance : ${entry.name}, Dégat : dé ${entry.dice}`); 
+                break;
+                case TYPES.distanceWeaponWithAmmo:
+                    console.log('Distance weapon with ammo found');
+                    toWrite.push(`Arme à distance : ${entry.name}, Dégat : dé ${entry.dice}, Arme à munitions\n    Munitions : ${entry.ammo.name}, Quantité : dé ${entry.ammo.dice}`); 
+                break;
+                case TYPES.weapon:
+                    console.log('Weapon found');
+                    toWrite.push(`Arme : ${entry.name}, Arme à ${entry.hands} main(s), Dégat : dé ${entry.dice}`); 
+                break;
+            }
+        }
+    });
+    document.getElementById('tirage').innerText = toWrite.join('\n');
+}
+
 function main() {
+    console.log('manager relation', getManagerRelation());
     const pageDices = initDices();
     const tablesToRoll = getTablesToRoll(pageDices);
     const experience = getExperience();
-    console.log('Experience: ', experience);
     const randomNumbers = generateFourRandomNumbers();
     console.log('Random numbers: ', randomNumbers);
 
@@ -335,4 +407,6 @@ function main() {
     return finalArray
 }
 
-document.getElementById('run').onclick() = main();
+
+document.getElementById('run').onclick = writeRoll;
+document.getElementById('reset').onclick = reset;

@@ -18,6 +18,17 @@ const UNIQUE_ITEMS_BONUSES = {
     emergencyWand: "Téléporte l'utilisateur au palier des huiles lorsque la baguette est brisée"
 }
 
+const TYPES = {
+    item: 'item',
+    specialItem: 'specialItem',
+    equipement: 'equipement',
+    specialEquipement: 'specialEquipement',
+    weapon: 'weapon',
+    distanceWeapon: 'distanceWeapon',
+    distanceWeaponWithAmmo: 'distanceWeaponWithAmmo',
+    armor: 'armor'
+}
+
 class Item {
     /**
      * Constructor
@@ -25,6 +36,7 @@ class Item {
      */
     constructor (name) {
         this.name = name;
+        this.type = TYPES.item;
     }
 }
 
@@ -37,6 +49,7 @@ class SpecialItem extends Item {
     constructor (name, attributes) {
         super(name);
         this.attributes = attributes;
+        this.type = TYPES.specialItem;
     }
 }
 
@@ -49,6 +62,7 @@ class Equipement extends Item {
     constructor (name, dice) {
         super(name);
         this.dice = dice;
+        this.type = TYPES.equipement;
     }
 }
 
@@ -63,6 +77,7 @@ class SpecialEquipement extends Equipement {
     constructor(name, dice, extra) {
         super(name, dice),
         this.extra = extra;
+        this.type = TYPES.specialEquipement;
     }
 }
 
@@ -75,6 +90,7 @@ class Weapon extends Equipement {
      */
     constructor(name, dice, extra) {
         super(name, dice);
+        this.type = TYPES.weapon;
         this.extra = extra;
         this.hands;
         if (extra.includes(SPECIAL_WEAPON_ATTRIBUTES.singleAndTwoHanded)) {
@@ -97,6 +113,7 @@ class DistanceWeapon extends Equipement {
     constructor (name, dice, extra) {
         super(name, dice);
         this.extra = extra;
+        this.type = TYPES.distanceWeapon;
     }
 }
 
@@ -111,6 +128,7 @@ class DistanceWeaponWithAmmo extends DistanceWeapon {
      constructor (name, dice, extra, ammo) {
         super(name, dice, extra);
         this.ammo = ammo;
+        this.type = TYPES.distanceWeaponWithAmmo;
     }
 }
 
@@ -122,6 +140,7 @@ class Armor extends Equipement {
      */
     constructor (name, dice) {
         super(name, dice);
+        this.type = TYPES.armor;
     }
 }
 
@@ -136,5 +155,6 @@ export {
     DistanceWeaponWithAmmo,
     Armor,
     SPECIAL_WEAPON_ATTRIBUTES,
-    UNIQUE_ITEMS_BONUSES
+    UNIQUE_ITEMS_BONUSES,
+    TYPES
 }
