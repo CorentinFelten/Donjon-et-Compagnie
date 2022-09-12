@@ -258,11 +258,57 @@ const SPECIAL_EQUIPEMENT = [
 
 
 const TABLE_DICTIONNARY = {
-    "weapon": WEAPONS,
-    "range": DISTANCE_WEAPONS,
-    "armor": ARMORS,
-    "equipement": EQUIPEMENT
+    weapon: WEAPONS,
+    range: DISTANCE_WEAPONS,
+    armor: ARMORS,
+    equipement: EQUIPEMENT
 }
+
+const DICE_VALUES = {
+    dice20: null,
+    dice12: null,
+    dice10: null,
+    dice8: null
+}
+
+const INIT_DICES = {
+    weapon: () => initDices2('weapon'),
+    range: () => initDices2('range'),
+    armor: () => initDices2('armor'),
+    equipement: () => initDices2('equipement')
+}
+
+const DICES = [
+    'weapon', 'range', 'armor', 'equipement'
+]
+
+function disableEnableOption (entryToExclude, valueToChange, disable = true) {
+    DICES.filter(id => id !== entryToExclude).map(idToChange => {
+        const elementToChange = document.getElementById(idToChange);
+        [...elementToChange.options].map(opt => {
+            if (opt.value === valueToChange) {
+                opt.disabled = disable;
+            } 
+        })
+    })
+}
+
+function initDices2 (elementId) {
+    const element = document.getElementById(elementId);
+    console.log(elementId, element.value);
+    if (element.value !== null) {
+        Object.entries(DICE_VALUES).map(([key, value]) => {
+            if (value === elementId) {
+                DICE_VALUES[key] = null;
+                disableEnableOption(elementId, element.value, false);
+            }
+        });
+        DICE_VALUES[element.value] = elementId;
+        disableEnableOption(elementId, element.value, true);
+    }
+    console.log(DICE_VALUES)
+}
+
 
 /**
  * Initializes dices from web page
@@ -327,6 +373,10 @@ function generateFourRandomNumbers () {
 function reset () {
     document.getElementById('anciennete').value = 1;
     document.getElementById('econome').value = 'neutre';
+    document.getElementById('weapon').value = null;
+    document.getElementById('range').value = null;
+    document.getElementById('armor').value = null;
+    document.getElementById('equipement').value = null;
 }
 
 function getManagerRelation () {
@@ -410,5 +460,9 @@ function main() {
 
 document.getElementById('run').onclick = writeRoll;
 document.getElementById('reset').onclick = reset;
+document.getElementById('weapon').onchange = INIT_DICES.weapon;
+document.getElementById('range').onchange = INIT_DICES.range;
+document.getElementById('armor').onchange = INIT_DICES.armor;
+document.getElementById('equipement').onchange = INIT_DICES.equipement;
 
 // run npx live-server in folder to start
