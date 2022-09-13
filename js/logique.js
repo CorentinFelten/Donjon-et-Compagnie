@@ -272,56 +272,64 @@ const DICE_VALUES = {
 }
 
 const INIT_DICES = {
-    weapon: () => initDices2('weapon'),
-    range: () => initDices2('range'),
-    armor: () => initDices2('armor'),
-    equipement: () => initDices2('equipement')
+    weapon: () => initDices('weapon'),
+    range: () => initDices('range'),
+    armor: () => initDices('armor'),
+    equipement: () => initDices('equipement')
 }
 
 const DICES = [
     'weapon', 'range', 'armor', 'equipement'
 ]
 
-function disableEnableOption (entryToExclude, valueToChange, disable = true) {
-    DICES.filter(id => id !== entryToExclude).map(idToChange => {
-        const elementToChange = document.getElementById(idToChange);
-        [...elementToChange.options].map(opt => {
-            if (opt.value === valueToChange) {
-                opt.disabled = disable;
-            } 
+function disableEnableOption (entryToChange, valueToChange, disable = true) {
+    console.log(valueToChange, typeof valueToChange);
+    
+    try {
+        if (JSON.parse(valueToChange) === null) {
+            return;
+        }
+    } catch (e) {
+        // do nothing
+    }
+    if (valueToChange !== null) {
+        DICES.filter(id => id !== entryToChange).map(idToChange => {
+            console.log('--> ', idToChange, valueToChange, disable)
+            const elementToChange = document.getElementById(idToChange);
+            [...elementToChange.options].map(opt => {
+                if (opt.value === valueToChange && valueToChange !== null) {
+                    opt.disabled = disable;
+                } 
+            })
         })
-    })
+    }
 }
 
-function initDices2 (elementId) {
+/**
+ * Initializes dices from web page
+ * @param {string} elementId
+ * @returns {Object}
+ */
+ function initDices (elementId) {
     const element = document.getElementById(elementId);
     console.log(elementId, element.value);
     if (element.value !== null) {
         Object.entries(DICE_VALUES).map(([key, value]) => {
             if (value === elementId) {
                 DICE_VALUES[key] = null;
-                disableEnableOption(elementId, element.value, false);
+                disableEnableOption(elementId, key, false);
             }
         });
         DICE_VALUES[element.value] = elementId;
         disableEnableOption(elementId, element.value, true);
     }
+    if (DICE_VALUES.null) {
+        delete DICE_VALUES.null;
+    }
     console.log(DICE_VALUES)
 }
 
 
-/**
- * Initializes dices from web page
- * @returns {Object}
- */
-function initDices () {
-    return {
-        dice20: "weapon",
-        dice12: "range",
-        dice10: "armor",
-        dice8: "equipement"
-    }
-}
 
 function getExperience () {
     let experience;
@@ -377,6 +385,11 @@ function reset () {
     document.getElementById('range').value = null;
     document.getElementById('armor').value = null;
     document.getElementById('equipement').value = null;
+    DICES.map(diceEntry => {
+        Object.keys(DICES).map(key => {
+            disableEnableOption(diceEntry, key, false)
+        })
+    });
 }
 
 function getManagerRelation () {
@@ -439,7 +452,8 @@ function writeRoll () {
 
 function main() {
     console.log('manager relation', getManagerRelation());
-    const pageDices = initDices();
+    const pageDices = DICE_VALUES;
+    console.log('Dices found:', pageDices);
     const tablesToRoll = getTablesToRoll(pageDices);
     const experience = getExperience();
     const randomNumbers = generateFourRandomNumbers();
