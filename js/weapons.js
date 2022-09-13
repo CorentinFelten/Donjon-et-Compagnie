@@ -88,7 +88,7 @@ class Weapon extends Equipement {
      * @param {number} dice 
      * @param {string[]} extra 
      */
-    constructor(name, dice, extra) {
+    constructor(name, dice, extra = []) {
         super(name, dice);
         this.type = TYPES.weapon;
         this.extra = extra;

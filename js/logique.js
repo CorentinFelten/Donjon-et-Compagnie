@@ -15,34 +15,35 @@ import {
 
 
 const WEAPONS = [
-    new Weapon("Matraque", 4, []),
+    new Weapon("Matraque", 4),
     new Weapon("Pertuisane", 6, [SPECIAL_WEAPON_ATTRIBUTES.twoHandedOnly, SPECIAL_WEAPON_ATTRIBUTES.medieval]),
-    new Weapon("Dague", 4, []),
-    new Weapon("Coutelas", 4, []),
-    new Weapon("Épée courte", 6, []),
-    new Weapon("Bâton clouté", 6, []),
-    new Weapon("Fouet", 4, []),
+    new Weapon("Dague", 4),
+    new Weapon("Coutelas", 4),
+    new Weapon("Épée courte", 6),
+    new Weapon("Bâton clouté", 6),
+    new Weapon("Fouet", 4),
     new Weapon("Lance", 6, [SPECIAL_WEAPON_ATTRIBUTES.singleAndTwoHanded]),
-    new Weapon("Rapière", 6, []),
-    new Weapon("Gourdin", 4, []),
-    new Weapon("Hachette", 6, []),
+    new Weapon("Rapière", 6),
+    new Weapon("Gourdin", 4),
+    new Weapon("Hachette", 6),
     new Weapon("Guisarme", 8, [SPECIAL_WEAPON_ATTRIBUTES.twoHandedOnly, SPECIAL_WEAPON_ATTRIBUTES.medieval]),
-    new Weapon("Faux", 6, []),
+    new Weapon("Faux", 6),
+    new Weapon("Machette", 6),
     new Weapon("Fléau d'Armes", 8, [SPECIAL_WEAPON_ATTRIBUTES.singleAndTwoHanded]),
     new Weapon("Bardiche", 6, [SPECIAL_WEAPON_ATTRIBUTES.twoHandedOnly, SPECIAL_WEAPON_ATTRIBUTES.medieval]),
-    new Weapon("Glaive", 6, []),
-    new Weapon("Cimeterre", 8, []),
+    new Weapon("Glaive", 6),
+    new Weapon("Cimeterre", 8),
     new Weapon("Pique", 8, [SPECIAL_WEAPON_ATTRIBUTES.twoHandedOnly]),
-    new Weapon("Washizaki", 6, []),
-    new Weapon("Épée et Main Gauche", 8, []),
-    new Weapon("Katana", 8, []),
-    new Weapon("Massue Cloutée", 6, []),
-    new Weapon("Hache de Guerre", 8, []),
+    new Weapon("Washizaki", 6),
+    new Weapon("Épée et Main Gauche", 8),
+    new Weapon("Katana", 8),
+    new Weapon("Massue Cloutée", 6),
+    new Weapon("Hache de Guerre", 8),
     new Weapon("Marteau de Guerre", 10, [SPECIAL_WEAPON_ATTRIBUTES.twoHandedOnly]),
     new Weapon("Épée Bâtarde", 8, [SPECIAL_WEAPON_ATTRIBUTES.singleAndTwoHanded]),
     new Weapon("Masse d'Armes", 8, [SPECIAL_WEAPON_ATTRIBUTES.twoHandedOnly]),
     new Weapon("Hallebarde", 10, [SPECIAL_WEAPON_ATTRIBUTES.twoHandedOnly]),
-    new Weapon("Masse de Guerre", 10, [])
+    new Weapon("Masse de Guerre", 10)
 ]
 
 const DISTANCE_WEAPONS = [
@@ -83,7 +84,7 @@ const ARMORS = [
     new Armor("Casque rouillé", 4),  // d4+
     new Armor("Harnois de cuir", 6),
     new Armor("Manteau de cuir et bouclier rond", 4),
-    new Armor("Bouclier de bois", 0),
+    new Armor("Bouclier de bois", 0), // d0 ???
     new Armor("Cuir Bouilli", 6),
     new Armor("Cuirasse rouillée", 6),
     new Armor("Tunique de cuir et toque", 4), //d4+
@@ -98,7 +99,7 @@ const ARMORS = [
     new Armor("Cuirasse", 8),
     new Armor("Cuir moisi et maille rouillée", 6),
     new Armor("Plaque Rouillée", 8),
-    new Armor("Vuir & maille et pavois", 6),
+    new Armor("Cuir & maille et pavois", 6),
     new Armor("Broigne", 6),
     new Armor("Gambison", 6),
     new Armor("Cuirasse Damasquinée", 8),
@@ -434,56 +435,8 @@ function getManagerRelation (experience, tablesToRoll) {
     return finalObject;
 }
 
-function writeRoll () {
-    const finalArray = main();
-    const toWrite = [];
-    finalArray.map(entry => {
-        if (Array.isArray(entry)) {
-            entry.map(subEntry => {
-                switch(subEntry.type) {
-                    case TYPES.specialEquipement:
-                        console.log('Special equipment found');
-                        toWrite.push(`Équipement spécial : ${subEntry.name}, Dé : dé ${subEntry.dice}, Description: ${subEntry.extra}`); 
-                    break;
-                    case TYPES.equipement:
-                        console.log('Equipment found');
-                        toWrite.push(`Équipement : ${subEntry.name}, Dé : dé ${subEntry.dice}`); 
-                    break;
-                    case TYPES.item:
-                        console.log('Item found');
-                        toWrite.push(`Objet : ${subEntry.name}`); 
-                    break;
-                    case TYPES.specialItem:
-                        console.log('Special item found');
-                        toWrite.push(`Objet spécial : ${subEntry.name}, Attributs : ${subEntry.attributes}`); 
-                    break;
-                }
-            })
-        } else {
-            switch(entry.type) {
-                case TYPES.armor:
-                    console.log('Armor found');
-                    toWrite.push(`Armure : ${entry.name}, Protection : dé ${entry.dice}`); 
-                break;
-                case TYPES.distanceWeapon:
-                    console.log('Distance weapon found');
-                    toWrite.push(`Arme à distance : ${entry.name}, Dégat : dé ${entry.dice}`); 
-                break;
-                case TYPES.distanceWeaponWithAmmo:
-                    console.log('Distance weapon with ammo found');
-                    toWrite.push(`Arme à distance : ${entry.name}, Dégat : dé ${entry.dice}, Arme à munitions\n    Munitions : ${entry.ammo.name}, Quantité : dé ${entry.ammo.dice}`); 
-                break;
-                case TYPES.weapon:
-                    console.log('Weapon found');
-                    toWrite.push(`Arme : ${entry.name}, Arme à ${entry.hands} main(s), Dégat : dé ${entry.dice}`); 
-                break;
-            }
-        }
-    });
-    document.getElementById('tirage').innerText = toWrite.join('\n');
-}
 
-function main() {
+function getEquipement() {
     const pageDices = DICE_VALUES;
     console.log('Dices found:', pageDices);
     const tablesToRoll = getTablesToRoll(pageDices);
@@ -503,6 +456,57 @@ function main() {
 
     return finalArray
 }
+
+
+function writeRoll () {
+    const finalArray = getEquipement();
+    const toWrite = [];
+    finalArray.map(entry => {
+        if (Array.isArray(entry)) {
+            entry.map(subEntry => {
+                switch(subEntry.type) {
+                    case TYPES.specialEquipement:
+                        console.log('Special equipment found');
+                        toWrite.push(`Équipement spécial : ${subEntry.name}, Dé : dé ${subEntry.dice}, Description: ${subEntry.extra}`); 
+                    break;
+                    case TYPES.equipement:
+                        console.log('Equipment found');
+                        toWrite.push(`${subEntry.name} Δ${subEntry.dice}`); 
+                    break;
+                    case TYPES.item:
+                        console.log('Item found');
+                        toWrite.push(`${subEntry.name}`); 
+                    break;
+                    case TYPES.specialItem:
+                        console.log('Special item found');
+                        toWrite.push(`Objet spécial : ${subEntry.name}, Attributs : ${subEntry.attributes}`); 
+                    break;
+                }
+            })
+        } else {
+            switch(entry.type) {
+                case TYPES.armor:
+                    console.log('Armor found');
+                    toWrite.push(`${entry.name} Δ${entry.dice}`); 
+                break;
+                case TYPES.distanceWeapon:
+                    console.log('Distance weapon found');
+                    toWrite.push(`${entry.name} d${entry.dice}`); 
+                break;
+                case TYPES.distanceWeaponWithAmmo:
+                    console.log('Distance weapon with ammo found');
+                    toWrite.push(`${entry.name} d${entry.dice} (${entry.ammo.name} Δ${entry.ammo.dice})`); 
+                break;
+                case TYPES.weapon:
+                    console.log('Weapon found');
+                    toWrite.push(`${entry.name} d${entry.dice}${entry.hands === 2 ? `/d${entry.dice}*` : ''}`); 
+                break;
+            }
+        }
+    });
+    document.getElementById('tirage').innerText = toWrite.join('\n');
+}
+
 
 
 document.getElementById('run').onclick = writeRoll;
