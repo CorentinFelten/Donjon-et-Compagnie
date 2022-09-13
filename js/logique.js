@@ -392,13 +392,46 @@ function reset () {
     });
 }
 
-function getManagerRelation () {
-    const conv = {
-        'positive': 1,
-        'neutre': 0,
-        'negative': -1
-    };
-    return conv[document.getElementById('econome').value];
+function getManagerRelation (experience, tablesToRoll) {
+    const relation = document.getElementById('econome').value;
+    const firstRandomNumbers = generateFourRandomNumbers();
+    console.log(firstRandomNumbers);
+    console.log(relation);
+    let secondRandomNumbers;
+    let finalObject;
+    switch (relation) {
+        case 'neutre':
+            finalObject = {
+                dice20: Math.min(firstRandomNumbers.dice20 + experience, tablesToRoll.dice20.length - 1),
+                dice12: Math.min(firstRandomNumbers.dice12 + experience, tablesToRoll.dice12.length - 1),
+                dice10: Math.min(firstRandomNumbers.dice10 + experience, tablesToRoll.dice10.length - 1),
+                dice8: Math.min(firstRandomNumbers.dice8 + experience, tablesToRoll.dice8.length - 1)
+            }
+        break;
+
+        case 'positive':
+            secondRandomNumbers = generateFourRandomNumbers();
+            console.log(secondRandomNumbers);
+            finalObject = {
+                dice20: Math.min(Math.max(firstRandomNumbers.dice20, secondRandomNumbers.dice20) + experience, tablesToRoll.dice20.length - 1),
+                dice12: Math.min(Math.max(firstRandomNumbers.dice12, secondRandomNumbers.dice12) + experience, tablesToRoll.dice12.length - 1),
+                dice10: Math.min(Math.max(firstRandomNumbers.dice10, secondRandomNumbers.dice10) + experience, tablesToRoll.dice10.length - 1),
+                dice8: Math.min(Math.max(firstRandomNumbers.dice8, secondRandomNumbers.dice8) + experience, tablesToRoll.dice8.length - 1)
+            }
+        break;
+
+        case 'negative':
+            secondRandomNumbers = generateFourRandomNumbers();
+            console.log(secondRandomNumbers);
+            finalObject = {
+                dice20: Math.min(Math.min(firstRandomNumbers.dice20, secondRandomNumbers.dice20) + experience, tablesToRoll.dice20.length - 1),
+                dice12: Math.min(Math.min(firstRandomNumbers.dice12, secondRandomNumbers.dice12) + experience, tablesToRoll.dice12.length - 1),
+                dice10: Math.min(Math.min(firstRandomNumbers.dice10, secondRandomNumbers.dice10) + experience, tablesToRoll.dice10.length - 1),
+                dice8: Math.min(Math.min(firstRandomNumbers.dice8, secondRandomNumbers.dice8) + experience, tablesToRoll.dice8.length - 1)
+            }
+    }
+    console.log(finalObject)
+    return finalObject;
 }
 
 function writeRoll () {
@@ -451,22 +484,22 @@ function writeRoll () {
 }
 
 function main() {
-    console.log('manager relation', getManagerRelation());
     const pageDices = DICE_VALUES;
     console.log('Dices found:', pageDices);
     const tablesToRoll = getTablesToRoll(pageDices);
-    const experience = getExperience();
-    const randomNumbers = generateFourRandomNumbers();
-    console.log('Random numbers: ', randomNumbers);
+
+    const managerRelation = getManagerRelation(getExperience(), tablesToRoll);
 
     const finalArray =  [
-        tablesToRoll.dice20.table[Math.min(randomNumbers.dice20 + experience, tablesToRoll.dice20.length - 1)],
-        tablesToRoll.dice12.table[Math.min(randomNumbers.dice12 + experience, tablesToRoll.dice12.length - 1)],
-        tablesToRoll.dice10.table[Math.min(randomNumbers.dice10 + experience, tablesToRoll.dice10.length - 1)],
-        tablesToRoll.dice8.table[Math.min(randomNumbers.dice8 + experience, tablesToRoll.dice8.length - 1)]
+        tablesToRoll.dice20.table[managerRelation.dice20],
+        tablesToRoll.dice12.table[managerRelation.dice12],
+        tablesToRoll.dice10.table[managerRelation.dice10],
+        tablesToRoll.dice8.table[managerRelation.dice8]
     ];
 
     console.log(finalArray);
+
+    reset();
 
     return finalArray
 }
