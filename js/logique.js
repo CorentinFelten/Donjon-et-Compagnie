@@ -283,9 +283,7 @@ const DICES = [
     'weapon', 'range', 'armor', 'equipement'
 ]
 
-function disableEnableOption (entryToChange, valueToChange, disable = true) {
-    console.log(valueToChange, typeof valueToChange);
-    
+function disableEnableOption (entryToChange, valueToChange, disable = true) {    
     try {
         if (JSON.parse(valueToChange) === null) {
             return;
@@ -295,7 +293,6 @@ function disableEnableOption (entryToChange, valueToChange, disable = true) {
     }
     if (valueToChange !== null) {
         DICES.filter(id => id !== entryToChange).map(idToChange => {
-            console.log('--> ', idToChange, valueToChange, disable)
             const elementToChange = document.getElementById(idToChange);
             [...elementToChange.options].map(opt => {
                 if (opt.value === valueToChange && valueToChange !== null) {
@@ -313,7 +310,6 @@ function disableEnableOption (entryToChange, valueToChange, disable = true) {
  */
  function initDices (elementId) {
     const element = document.getElementById(elementId);
-    console.log(elementId, element.value);
     if (element.value !== null) {
         Object.entries(DICE_VALUES).map(([key, value]) => {
             if (value === elementId) {
@@ -327,22 +323,8 @@ function disableEnableOption (entryToChange, valueToChange, disable = true) {
     if (DICE_VALUES.null) {
         delete DICE_VALUES.null;
     }
-    console.log(DICE_VALUES)
 }
 
-
-
-function getExperience () {
-    let experience;
-    try {
-        experience = Number(document.getElementById('anciennete').value); 
-        console.log('Experience found: ', experience);
-    } catch {
-        experience = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
-        console.log('No experience found. Randomly generated: ', experience);
-    }
-    return experience;
-}
 
 /**
  * Takes initialized dice detail to output the corresponding tables
@@ -380,6 +362,7 @@ function generateFourRandomNumbers () {
 }
 
 function reset () {
+    document.getElementById('tirage').innerText = '';
     document.getElementById('anciennete').value = 1;
     document.getElementById('econome').value = 'neutre';
     document.getElementById('weapon').value = null;
@@ -387,17 +370,18 @@ function reset () {
     document.getElementById('armor').value = null;
     document.getElementById('equipement').value = null;
     DICES.map(diceEntry => {
-        Object.keys(DICES).map(key => {
-            disableEnableOption(diceEntry, key, false)
+        Object.keys(DICE_VALUES).map(key => {
+            disableEnableOption(diceEntry, key, false);
         })
-    });
+    })
+    Object.keys(DICE_VALUES).map(key => {
+        DICE_VALUES[key] = null;
+    })
 }
 
 function getManagerRelation (experience, tablesToRoll) {
     const relation = document.getElementById('econome').value;
     const firstRandomNumbers = generateFourRandomNumbers();
-    console.log(firstRandomNumbers);
-    console.log(relation);
     let secondRandomNumbers;
     let finalObject;
     switch (relation) {
@@ -412,7 +396,6 @@ function getManagerRelation (experience, tablesToRoll) {
 
         case 'positive':
             secondRandomNumbers = generateFourRandomNumbers();
-            console.log(secondRandomNumbers);
             finalObject = {
                 dice20: Math.min(Math.max(firstRandomNumbers.dice20, secondRandomNumbers.dice20) + experience, tablesToRoll.dice20.length - 1),
                 dice12: Math.min(Math.max(firstRandomNumbers.dice12, secondRandomNumbers.dice12) + experience, tablesToRoll.dice12.length - 1),
@@ -423,7 +406,6 @@ function getManagerRelation (experience, tablesToRoll) {
 
         case 'negative':
             secondRandomNumbers = generateFourRandomNumbers();
-            console.log(secondRandomNumbers);
             finalObject = {
                 dice20: Math.min(Math.min(firstRandomNumbers.dice20, secondRandomNumbers.dice20) + experience, tablesToRoll.dice20.length - 1),
                 dice12: Math.min(Math.min(firstRandomNumbers.dice12, secondRandomNumbers.dice12) + experience, tablesToRoll.dice12.length - 1),
@@ -431,17 +413,19 @@ function getManagerRelation (experience, tablesToRoll) {
                 dice8: Math.min(Math.min(firstRandomNumbers.dice8, secondRandomNumbers.dice8) + experience, tablesToRoll.dice8.length - 1)
             }
     }
-    console.log(finalObject)
     return finalObject;
 }
 
 
 function getEquipement() {
     const pageDices = DICE_VALUES;
-    console.log('Dices found:', pageDices);
+    if (Object.values(DICE_VALUES).includes(null)) {
+        document.getElementById('tirage').innerText = 'Tous les dés ne sont pas attribués'
+        return [];
+    }
     const tablesToRoll = getTablesToRoll(pageDices);
 
-    const managerRelation = getManagerRelation(getExperience(), tablesToRoll);
+    const managerRelation = getManagerRelation(Number(document.getElementById('anciennete').value), tablesToRoll);
 
     const finalArray =  [
         tablesToRoll.dice20.table[managerRelation.dice20],
@@ -449,11 +433,6 @@ function getEquipement() {
         tablesToRoll.dice10.table[managerRelation.dice10],
         tablesToRoll.dice8.table[managerRelation.dice8]
     ];
-
-    console.log(finalArray);
-
-    reset();
-
     return finalArray
 }
 
@@ -466,54 +445,77 @@ function writeRoll () {
             entry.map(subEntry => {
                 switch(subEntry.type) {
                     case TYPES.specialEquipement:
-                        console.log('Special equipment found');
-                        toWrite.push(`Équipement spécial : ${subEntry.name}, Dé : dé ${subEntry.dice}, Description: ${subEntry.extra}`); 
+                        toWrite.push(`${subEntry.name} Δ${subEntry.dice} : ${subEntry.extra}`); 
                     break;
                     case TYPES.equipement:
-                        console.log('Equipment found');
                         toWrite.push(`${subEntry.name} Δ${subEntry.dice}`); 
                     break;
                     case TYPES.item:
-                        console.log('Item found');
                         toWrite.push(`${subEntry.name}`); 
                     break;
                     case TYPES.specialItem:
-                        console.log('Special item found');
-                        toWrite.push(`Objet spécial : ${subEntry.name}, Attributs : ${subEntry.attributes}`); 
+                        toWrite.push(`${subEntry.name} : ${subEntry.attributes}`); 
                     break;
                 }
             })
         } else {
             switch(entry.type) {
                 case TYPES.armor:
-                    console.log('Armor found');
                     toWrite.push(`${entry.name} Δ${entry.dice}`); 
                 break;
                 case TYPES.distanceWeapon:
-                    console.log('Distance weapon found');
                     toWrite.push(`${entry.name} d${entry.dice}`); 
                 break;
                 case TYPES.distanceWeaponWithAmmo:
-                    console.log('Distance weapon with ammo found');
                     toWrite.push(`${entry.name} d${entry.dice} (${entry.ammo.name} Δ${entry.ammo.dice})`); 
                 break;
                 case TYPES.weapon:
-                    console.log('Weapon found');
                     toWrite.push(`${entry.name} d${entry.dice}${entry.hands === 2 ? `/d${entry.dice}*` : ''}`); 
                 break;
             }
         }
     });
-    document.getElementById('tirage').innerText = toWrite.join('\n');
+    if (toWrite.length > 0) {
+        document.getElementById('tirage').innerText = toWrite.join('\n');
+    }
 }
 
 
+function init () {
+    document.getElementById('run').onclick = writeRoll;
+    document.getElementById('reset').onclick = reset;
+    const weapon = document.getElementById('weapon');
+    const range = document.getElementById('range');
+    const armor = document.getElementById('armor');
+    const equipement = document.getElementById('equipement');
+    weapon.onchange = INIT_DICES.weapon;
+    range.onchange = INIT_DICES.range;
+    armor.onchange = INIT_DICES.armor;
+    equipement.onchange = INIT_DICES.equipement;
+    try {
+        JSON.parse(weapon.value);
+    } catch (e) {
+        INIT_DICES.weapon();
+    }
+    try {
+        JSON.parse(range.value);
+    } catch (e) {
+        INIT_DICES.range();
+    }
+    try {
+        JSON.parse(armor.value);
+    } catch (e) {
+        INIT_DICES.armor();
+    }
+    try {
+        JSON.parse(equipement.value);
+    } catch (e) {
+        INIT_DICES.equipement();
+    }
+}
 
-document.getElementById('run').onclick = writeRoll;
-document.getElementById('reset').onclick = reset;
-document.getElementById('weapon').onchange = INIT_DICES.weapon;
-document.getElementById('range').onchange = INIT_DICES.range;
-document.getElementById('armor').onchange = INIT_DICES.armor;
-document.getElementById('equipement').onchange = INIT_DICES.equipement;
+
+init();
+
 
 // run npx live-server in folder to start
