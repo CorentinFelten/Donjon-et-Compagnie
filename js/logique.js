@@ -91,7 +91,7 @@ const ARMORS = [
     new Armor("Maille trouée", 6),
     new Armor("Cuir clouté", 6),
     new Armor("Cuirasse", 6),
-    new Armor("Cuir renforcé et petit bouclier", 4), // d4+
+    new Armor("Petit bouclier et cuir renforcé", 4), // d4+
     new Armor("Lorique mal ajustée", 6),
     new Armor("Cotte d'Anneaux", 8),
     new Armor("Tunique de Mailles", 8),
@@ -99,7 +99,7 @@ const ARMORS = [
     new Armor("Cuirasse", 8),
     new Armor("Cuir moisi et maille rouillée", 6),
     new Armor("Plaque Rouillée", 8),
-    new Armor("Cuir & maille et pavois", 6),
+    new Armor("Pavois et cuir & maille", 6),
     new Armor("Broigne", 6),
     new Armor("Gambison", 6),
     new Armor("Cuirasse Damasquinée", 8),
@@ -437,7 +437,7 @@ function getEquipement() {
 }
 
 
-function writeRoll () {
+function writeRoll () { // Arme / distance / armure / equipement dans cet ordre
     const finalArray = getEquipement();
     const toWrite = [];
     finalArray.map(entry => {
