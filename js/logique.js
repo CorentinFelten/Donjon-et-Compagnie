@@ -364,6 +364,7 @@ function generateFourRandomNumbers () {
 function reset () {
     document.getElementById('tirage').innerText = '';
     document.getElementById('anciennete').value = 1;
+    document.getElementById('mj').value = '';
     document.getElementById('econome').value = 'neutre';
     document.getElementById('weapon').value = null;
     document.getElementById('range').value = null;
@@ -438,6 +439,8 @@ function getEquipement() {
 
 
 function writeRoll () {
+    checkValue(document.getElementById('anciennete'), 10);
+    checkValue(document.getElementById('mj'), 20);
     const finalArray = getEquipement();
     const toWrite = [];
     finalArray.map(entry => {
@@ -479,6 +482,16 @@ function writeRoll () {
         document.getElementById('tirage').innerText = toWrite.join('\n');
     }
 }
+
+function checkValue (toCheck, max) {
+    if (toCheck.value > max) {
+        toCheck.value = max;
+    } else if (toCheck.value < 1) {
+        toCheck.value = 1;
+    }
+}
+
+
 
 
 function init () {
