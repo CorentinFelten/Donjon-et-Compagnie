@@ -1,8 +1,64 @@
-.content {
+body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+  
+  h2 {
+    margin-bottom: 10px;
+  }
+  
+  input[type="number"],
+  select {
+    font-size: 16px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    width: 100px;
+  }
+  
+  button {
+    font-size: 16px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  button:hover {
+    background-color: #0069d9;
+  }
+  
+  select {
+    width: 120px;
+  }
+  
+  .content {
     display: flex;
-    align-items: center;
-}
-
-ul {
-    list-style-type: none;
-}
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .content div {
+    margin-right: 30px;
+    margin-bottom: 30px;
+  }
+  
+  p {
+    margin: 0;
+  }
+  
+  #tirage {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
