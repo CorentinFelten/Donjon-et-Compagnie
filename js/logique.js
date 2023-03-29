@@ -22,16 +22,7 @@ const DICE_VALUES = {
     dice8: null
 };
 
-const INIT_DICES = {
-    weapon: () => initDices('weapon'),
-    range: () => initDices('range'),
-    armor: () => initDices('armor'),
-    equipement: () => initDices('equipement')
-}
-
-const DICES = [
-    'weapon', 'range', 'armor', 'equipement'
-]
+const DICES = ['weapon', 'range', 'armor', 'equipement'];
 
 function disableEnableOption (entryToChange, valueToChange, disable = true) {    
     try {
@@ -53,41 +44,34 @@ function disableEnableOption (entryToChange, valueToChange, disable = true) {
     }
 }
 
- function initDices (elementId) {
+function initDices (elementId) {
     const element = document.getElementById(elementId);
-    if (element.value !== null) {
-        for (const key of Object.keys(DICE_VALUES)) {
-            if (DICE_VALUES[key] === elementId) {
-                DICE_VALUES[key] = null;
-                disableEnableOption(elementId, key, false);
-            }
+    const {value} = element;
+    if (value !== null) {
+        const key = Object.keys(DICE_VALUES).find(k => DICE_VALUES[k] === elementId);
+        if (key) {
+            DICE_VALUES[key] = null;
+            disableEnableOption(elementId, key, false);
         }
-        DICE_VALUES[element.value] = elementId;
-        disableEnableOption(elementId, element.value, true);
-    }
-    if (DICE_VALUES.null) {
-        delete DICE_VALUES.null;
+        DICE_VALUES[value] = elementId;
+        disableEnableOption(elementId, value, true);
+        }
+    delete DICE_VALUES.null;
+}
+
+function getDiceDetails(dice) {
+    return {
+        table: TABLE_DICTIONNARY[dice],
+        length: TABLE_DICTIONNARY[dice].length
     }
 }
 
-function getTablesToRoll (dicesDetail) {
+function getTablesToRoll () {
     return {
-        dice20: {
-            table: TABLE_DICTIONNARY[dicesDetail.dice20],
-            length: TABLE_DICTIONNARY[dicesDetail.dice20].length
-        },
-        dice12: {
-            table: TABLE_DICTIONNARY[dicesDetail.dice12],
-            length: TABLE_DICTIONNARY[dicesDetail.dice12].length
-        },
-        dice10: {
-            table: TABLE_DICTIONNARY[dicesDetail.dice10],
-            length: TABLE_DICTIONNARY[dicesDetail.dice10].length
-        },
-        dice8: {
-            table: TABLE_DICTIONNARY[dicesDetail.dice8],
-            length: TABLE_DICTIONNARY[dicesDetail.dice8].length
-        }
+        dice20: getDiceDetails(DICE_VALUES.dice20),
+        dice12: getDiceDetails(DICE_VALUES.dice12),
+        dice10: getDiceDetails(DICE_VALUES.dice10),
+        dice8: getDiceDetails(DICE_VALUES.dice8)
     }
 }
 
@@ -167,12 +151,11 @@ function getManagerRelation (experience, tablesToRoll) {
 }
 
 function getEquipement() {
-    const pageDices = DICE_VALUES;
-    if (Object.values(pageDices).some(dice => dice === null)) {
-        document.getElementById('tirage').innerText = 'Tous les dés ne sont pas attribués'
+    if (Object.values(DICE_VALUES).some(dice => dice === null)) {
+        elements.tirage.innerText = 'Tous les dés ne sont pas attribués'
         return [];
     }
-    const tablesToRoll = getTablesToRoll(pageDices);
+    const tablesToRoll = getTablesToRoll(DICE_VALUES);
     const managerRelation = getManagerRelation(Number(elements.anciennete.value), tablesToRoll);
 
     return [
@@ -237,29 +220,10 @@ function init () {
     elements.reset.onclick = reset;
 
     DICES.forEach((dice => {
-        elements[dice].onchange = INIT_DICES[dice];
-    }));
-
-    try {
-        JSON.parse(elements.weapon.value);
-    } catch (e) {
-        INIT_DICES.weapon();
-    }
-    try {
-        JSON.parse(elements.range.value);
-    } catch (e) {
-        INIT_DICES.range();
-    }
-    try {
-        JSON.parse(elements.armor.value);
-    } catch (e) {
-        INIT_DICES.armor();
-    }
-    try {
-        JSON.parse(elements.equipement.value);
-    } catch (e) {
-        INIT_DICES.equipement();
-    }
+        elements[dice].onchange = () => {
+            initDices(dice);
+        }})
+    );
 }
 
 

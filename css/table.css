@@ -1,8 +1,7 @@
 body {
     font-family: Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
-    color: #333;
+    margin: 0;
+    padding: 0;
   }
   
   h1 {
@@ -10,55 +9,61 @@ body {
   }
   
   h2 {
+    margin-top: 20px;
     margin-bottom: 10px;
   }
   
   input[type="number"],
   select {
-    font-size: 16px;
+    display: block;
+    margin: 10px auto;
     padding: 5px;
+    border-radius: 5px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #fff;
-    width: 100px;
-  }
-  
-  button {
     font-size: 16px;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-    margin-right: 10px;
+    max-width: 100%;
   }
   
-  button:hover {
-    background-color: #0069d9;
-  }
-  
-  select {
-    width: 120px;
+  select option[value="null"] {
+    display: none;
   }
   
   .content {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-between;
   }
   
   .content div {
-    margin-right: 30px;
-    margin-bottom: 30px;
+    width: 48%;
+    margin-bottom: 20px;
   }
   
-  p {
-    margin: 0;
+  button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0062cc;
   }
   
   #tirage {
+    font-size: 24px;
     font-weight: bold;
-    font-size: 18px;
+    text-align: center;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .content div {
+      width: 100%;
+    }
   }
   
