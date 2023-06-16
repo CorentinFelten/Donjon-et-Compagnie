@@ -192,8 +192,8 @@ function getManagerRelation(experience, tablesToRoll) {
       } else {
         const mapEntry = {
           [TYPES.armor]: () => `${entry.name} Δ${entry.dice}`,
-          [TYPES.distanceWeapon]: () => `${entry.name} d${entry.dice}`,
-          [TYPES.distanceWeaponWithAmmo]: () => `${entry.name} d${entry.dice} (${entry.ammo.name} Δ${entry.ammo.dice})`,
+          [TYPES.rangeWeapon]: () => `${entry.name} d${entry.dice}`,
+          [TYPES.rangeWeaponWithAmmo]: () => `${entry.name} d${entry.dice} (${entry.ammo.name} Δ${entry.ammo.dice})`,
           [TYPES.weapon]: () => `${entry.name} d${entry.dice}${entry.hands === 2 ? `/d${entry.dice}*` : ''}`
         };
   

@@ -1,69 +1,70 @@
+/* Set a maximum width for the page */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-  
-  h1 {
-    text-align: center;
-  }
-  
-  h2 {
-    margin-top: 20px;
-    margin-bottom: 10px;
-  }
-  
-  input[type="number"],
-  select {
-    display: block;
-    margin: 10px auto;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    max-width: 100%;
-  }
-  
-  select option[value="null"] {
-    display: none;
-  }
-  
-  .content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  
-  .content div {
-    width: 48%;
-    margin-bottom: 20px;
-  }
-  
-  button {
-    display: block;
-    margin: 20px auto;
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0062cc;
-  }
-  
-  #tirage {
-    font-size: 24px;
-    font-weight: bold;
-    text-align: center;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .content div {
-      width: 100%;
-    }
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+}
+
+
+/* Style the page header */
+h1 {
+  font-size: 36px;
+  text-align: center;
+}
+
+/* Style the input fields and select boxes */
+input[type="number"],
+select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+select option[value="null"] {
+  display: none;
+}
+
+/* Style the buttons */
+button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+/* Style the table */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Style the legend */
+h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+/* Style the tirage output */
+p#tirage {
+  font-size: 24px;
+  font-weight: bold;
+}

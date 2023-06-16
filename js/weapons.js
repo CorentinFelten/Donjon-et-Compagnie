@@ -24,8 +24,8 @@ const TYPES = {
     equipement: 'equipement',
     specialEquipement: 'specialEquipement',
     weapon: 'weapon',
-    distanceWeapon: 'distanceWeapon',
-    distanceWeaponWithAmmo: 'distanceWeaponWithAmmo',
+    rangeWeapon: 'rangeWeapon',
+    rangeWeaponWithAmmo: 'rangeWeaponWithAmmo',
     armor: 'armor'
 }
 
@@ -103,7 +103,7 @@ class Weapon extends Equipement {
     }
 }
 
-class DistanceWeapon extends Equipement {
+class RangeWeapon extends Equipement {
     /**
      * Constructor
      * @param {string} name 
@@ -113,11 +113,11 @@ class DistanceWeapon extends Equipement {
     constructor (name, dice, extra) {
         super(name, dice);
         this.extra = extra;
-        this.type = TYPES.distanceWeapon;
+        this.type = TYPES.rangeWeapon;
     }
 }
 
-class DistanceWeaponWithAmmo extends DistanceWeapon {
+class RangeWeaponWithAmmo extends RangeWeapon {
     /**
      * Constructor
      * @param {string} name 
@@ -128,7 +128,7 @@ class DistanceWeaponWithAmmo extends DistanceWeapon {
      constructor (name, dice, extra, ammo) {
         super(name, dice, extra);
         this.ammo = ammo;
-        this.type = TYPES.distanceWeaponWithAmmo;
+        this.type = TYPES.rangeWeaponWithAmmo;
     }
 }
 
@@ -177,35 +177,35 @@ const WEAPONS = [
 ]
 
 const DISTANCE_WEAPONS = [
-    new DistanceWeaponWithAmmo("Pierres polies", 4, [], {name: "Sac", dice: 10}),
-    new DistanceWeaponWithAmmo("Poignard de jet", 4, [], {name: "Ceinture", dice: 6}),
-    new DistanceWeaponWithAmmo("Fronde", 4, [], {name: "Sac de caillous", dice: 10}),
-    new DistanceWeaponWithAmmo("Fléchettes", 4, [], {name: "Carquois", dice: 6}),
-    new DistanceWeapon("Arc Court", 6, []),
-    new DistanceWeapon("Bolas", 4, []),
-    new DistanceWeaponWithAmmo("Pistolet de duel", 6, [], {name: "Poudre & Plomb", dice: 6}),
-    new DistanceWeapon("Javelot", 6, []),
-    new DistanceWeaponWithAmmo("Shuriken", 4, [], {name: "Étui", dice: 6}),
-    new DistanceWeaponWithAmmo("Arbalète à une main", 6, [], {name: "Carreaux", dice: 6}),
-    new DistanceWeaponWithAmmo("Haches de lancer", 6, [], {name: "Ceinture", dice: 6}),
-    new DistanceWeaponWithAmmo("Arc nomade", 6, [], {name: "Carquois", dice: 8}),
-    new DistanceWeaponWithAmmo("Couleuvrine", 8, [], {name: "Poudre & Plomb", dice: 6}),
-    new DistanceWeapon("Shuriken lourd", 8, []),
-    new DistanceWeaponWithAmmo("Tromblon", 6, [SPECIAL_WEAPON_ATTRIBUTES.powder], {name: "Poudre & Grenaille", dice: 8}),
-    new DistanceWeapon("Lame-Boomerang", 8, []),
-    new DistanceWeaponWithAmmo("Arc de Chasse", 6, [], {name: "Carquois", dice: 8}),
-    new DistanceWeaponWithAmmo("Arbalette à Répétition", 8, [], {name: "Carreaux", dice: 8}),
-    new DistanceWeaponWithAmmo("Bâton-Fronde", 6, [], {name: "Sac de billes", dice: 8}),
-    new DistanceWeapon("Francisque", 8, []),
-    new DistanceWeapon("Framée", 8, []),
-    new DistanceWeaponWithAmmo("Fronde", 6, [], {name: "Sac de billes d'acier", dice: 6}),
-    new DistanceWeapon("Angon", 6, []),
-    new DistanceWeapon("Javeline", 8, []),
-    new DistanceWeaponWithAmmo("Lance Javelots", 8, [], {name: "Javelots", dice: 6}),
-    new DistanceWeaponWithAmmo("Grenades", 10, [SPECIAL_WEAPON_ATTRIBUTES.powder], {name: "Ceinture", dice: 4}),
-    new DistanceWeaponWithAmmo("Arbalète à répétition", 8, [], {name: "Carreaux", dice: 8}),
-    new DistanceWeaponWithAmmo("Arquebuse", 8, [], {name: "Poudre & Plomb", dice: 6}),
-    new DistanceWeaponWithAmmo("Mousquet", 10, [], {name: "Poudre & Plomb", dice: 6}),
+    new RangeWeaponWithAmmo("Pierres polies", 4, [], {name: "Sac", dice: 10}),
+    new RangeWeaponWithAmmo("Poignard de jet", 4, [], {name: "Ceinture", dice: 6}),
+    new RangeWeaponWithAmmo("Fronde", 4, [], {name: "Sac de caillous", dice: 10}),
+    new RangeWeaponWithAmmo("Fléchettes", 4, [], {name: "Carquois", dice: 6}),
+    new RangeWeapon("Arc Court", 6, []),
+    new RangeWeapon("Bolas", 4, []),
+    new RangeWeaponWithAmmo("Pistolet de duel", 6, [], {name: "Poudre & Plomb", dice: 6}),
+    new RangeWeapon("Javelot", 6, []),
+    new RangeWeaponWithAmmo("Shuriken", 4, [], {name: "Étui", dice: 6}),
+    new RangeWeaponWithAmmo("Arbalète à une main", 6, [], {name: "Carreaux", dice: 6}),
+    new RangeWeaponWithAmmo("Haches de lancer", 6, [], {name: "Ceinture", dice: 6}),
+    new RangeWeaponWithAmmo("Arc nomade", 6, [], {name: "Carquois", dice: 8}),
+    new RangeWeaponWithAmmo("Couleuvrine", 8, [], {name: "Poudre & Plomb", dice: 6}),
+    new RangeWeapon("Shuriken lourd", 8, []),
+    new RangeWeaponWithAmmo("Tromblon", 6, [SPECIAL_WEAPON_ATTRIBUTES.powder], {name: "Poudre & Grenaille", dice: 8}),
+    new RangeWeapon("Lame-Boomerang", 8, []),
+    new RangeWeaponWithAmmo("Arc de Chasse", 6, [], {name: "Carquois", dice: 8}),
+    new RangeWeaponWithAmmo("Arbalette à Répétition", 8, [], {name: "Carreaux", dice: 8}),
+    new RangeWeaponWithAmmo("Bâton-Fronde", 6, [], {name: "Sac de billes", dice: 8}),
+    new RangeWeapon("Francisque", 8, []),
+    new RangeWeapon("Framée", 8, []),
+    new RangeWeaponWithAmmo("Fronde", 6, [], {name: "Sac de billes d'acier", dice: 6}),
+    new RangeWeapon("Angon", 6, []),
+    new RangeWeapon("Javeline", 8, []),
+    new RangeWeaponWithAmmo("Lance Javelots", 8, [], {name: "Javelots", dice: 6}),
+    new RangeWeaponWithAmmo("Grenades", 10, [SPECIAL_WEAPON_ATTRIBUTES.powder], {name: "Ceinture", dice: 4}),
+    new RangeWeaponWithAmmo("Arbalète à répétition", 8, [], {name: "Carreaux", dice: 8}),
+    new RangeWeaponWithAmmo("Arquebuse", 8, [], {name: "Poudre & Plomb", dice: 6}),
+    new RangeWeaponWithAmmo("Mousquet", 10, [], {name: "Poudre & Plomb", dice: 6}),
 ]
 
 
@@ -394,8 +394,8 @@ export {
     Equipement,
     SpecialEquipement,
     Weapon,
-    DistanceWeapon,
-    DistanceWeaponWithAmmo,
+    RangeWeapon,
+    RangeWeaponWithAmmo,
     Armor,
     SPECIAL_WEAPON_ATTRIBUTES,
     UNIQUE_ITEMS_BONUSES,
