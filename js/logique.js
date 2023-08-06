@@ -187,10 +187,10 @@ function writeRoll () { // Arme / distance / armure / equipement dans cet ordre
             }
         } else {
             const mapEntry = {
-                [TYPES.armor]: () => `${entry.name} Δ${entry.dice}`,
+                [TYPES.armor]: () => `${entry.name} ${entry.dice ? `Δ${entry.dice}${entry.extra ?? ""}` : ''}`,
                 [TYPES.rangeWeapon]: () => `${entry.name} d${entry.dice}`,
-                [TYPES.rangeWeaponWithAmmo]: () => `${entry.name} d${entry.dice} (${entry.ammo.name} Δ${entry.ammo.dice})`,
-                [TYPES.weapon]: () => `${entry.name} d${entry.dice}${entry.hands === 2 ? `/d${entry.dice}*` : ''}`
+                [TYPES.rangeWeaponWithAmmo]: () => `${entry.name} d${entry.dice}${entry.extra} (${entry.ammo.name} Δ${entry.ammo.dice})`,
+                [TYPES.weapon]: () => `${entry.name} d${entry.dice}${entry.hands === 3 ? `/d${entry.dice}*` : entry.hands === 2 ? `*` : ''}`
               };
         
               if (mapEntry[entry.type]) {
@@ -207,7 +207,7 @@ function checkValue (toCheck, max) {
     if (toCheck.value > max) {
         toCheck.value = max;
     } else if (toCheck.value < 1) {
-        toCheck.value = 1;
+        toCheck.value = 1; // TODO: allow MJ to roll with 0
     }
 }
 

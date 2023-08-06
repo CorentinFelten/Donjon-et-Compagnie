@@ -4,10 +4,8 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 100vh;
   margin: 0;
 }
-
 
 /* Style the page header */
 h1 {
@@ -30,18 +28,24 @@ select option[value="null"] {
   display: none;
 }
 
+/* Style the buttons container */
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 30%; /* Adjust this value as needed */
+  margin: 20px auto; /* Center the container horizontally */
+}
+
 /* Style the buttons */
 button {
-  background-color: #4CAF50;
-  border: none;
-  color: white;
   padding: 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
   font-size: 16px;
-  margin: 10px;
-  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  display: inline-block;
+  width: 40%;
 }
 
 /* Style the table */

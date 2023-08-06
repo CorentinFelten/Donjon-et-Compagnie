@@ -94,11 +94,11 @@ class Weapon extends Equipement {
         this.extra = extra;
         this.hands;
         if (extra.includes(SPECIAL_WEAPON_ATTRIBUTES.singleAndTwoHanded)) {
-            this.hands = [1, 2];
+            this.hands = 3;
         } else if (extra.includes(SPECIAL_WEAPON_ATTRIBUTES.twoHandedOnly)) {
-            this.hands = [2];
+            this.hands = 2;
         } else {
-            this.hands = [1];
+            this.hands = 1;
         }
     }
 }
@@ -137,10 +137,12 @@ class Armor extends Equipement {
      * Constructor
      * @param {string} name 
      * @param {number} dice 
+     * @param {string} extra
      */
-    constructor (name, dice) {
+    constructor (name, dice, extra) {
         super(name, dice);
         this.type = TYPES.armor;
+        this.extra = extra;
     }
 }
 
@@ -183,15 +185,15 @@ const DISTANCE_WEAPONS = [
     new RangeWeaponWithAmmo("Fléchettes", 4, [], {name: "Carquois", dice: 6}),
     new RangeWeapon("Arc Court", 6, []),
     new RangeWeapon("Bolas", 4, []),
-    new RangeWeaponWithAmmo("Pistolet de duel", 6, [], {name: "Poudre & Plomb", dice: 6}),
+    new RangeWeaponWithAmmo("Pistolet de duel", 6, ["§"], {name: "Poudre & Plomb", dice: 6}),
     new RangeWeapon("Javelot", 6, []),
     new RangeWeaponWithAmmo("Shuriken", 4, [], {name: "Étui", dice: 6}),
     new RangeWeaponWithAmmo("Arbalète à une main", 6, [], {name: "Carreaux", dice: 6}),
     new RangeWeaponWithAmmo("Haches de lancer", 6, [], {name: "Ceinture", dice: 6}),
     new RangeWeaponWithAmmo("Arc nomade", 6, [], {name: "Carquois", dice: 8}),
-    new RangeWeaponWithAmmo("Couleuvrine", 8, [], {name: "Poudre & Plomb", dice: 6}),
+    new RangeWeaponWithAmmo("Couleuvrine", 8, ["§"], {name: "Poudre & Plomb", dice: 6}),
     new RangeWeapon("Shuriken lourd", 8, []),
-    new RangeWeaponWithAmmo("Tromblon", 6, [SPECIAL_WEAPON_ATTRIBUTES.powder], {name: "Poudre & Grenaille", dice: 8}),
+    new RangeWeaponWithAmmo("Tromblon", 6, ["§"], {name: "Poudre & Grenaille", dice: 8}),
     new RangeWeapon("Lame-Boomerang", 8, []),
     new RangeWeaponWithAmmo("Arc de Chasse", 6, [], {name: "Carquois", dice: 8}),
     new RangeWeaponWithAmmo("Arbalette à Répétition", 8, [], {name: "Carreaux", dice: 8}),
@@ -202,26 +204,26 @@ const DISTANCE_WEAPONS = [
     new RangeWeapon("Angon", 6, []),
     new RangeWeapon("Javeline", 8, []),
     new RangeWeaponWithAmmo("Lance Javelots", 8, [], {name: "Javelots", dice: 6}),
-    new RangeWeaponWithAmmo("Grenades", 10, [SPECIAL_WEAPON_ATTRIBUTES.powder], {name: "Ceinture", dice: 4}),
+    new RangeWeaponWithAmmo("Grenades", 10, ["§"], {name: "Ceinture", dice: 4}),
     new RangeWeaponWithAmmo("Arbalète à répétition", 8, [], {name: "Carreaux", dice: 8}),
-    new RangeWeaponWithAmmo("Arquebuse", 8, [], {name: "Poudre & Plomb", dice: 6}),
-    new RangeWeaponWithAmmo("Mousquet", 10, [], {name: "Poudre & Plomb", dice: 6}),
+    new RangeWeaponWithAmmo("Arquebuse", 8, ["§"], {name: "Poudre & Plomb", dice: 6}),
+    new RangeWeaponWithAmmo("Mousquet", 10, ["§"], {name: "Poudre & Plomb", dice: 6}),
 ]
 
 
 const ARMORS = [
-    new Armor("Cuir renforcé", 4), // d4+
-    new Armor("Casque rouillé", 4),  // d4+
+    new Armor("Cuir renforcé", 4, "+"), // d4+
+    new Armor("Casque rouillé", 4, "+"),  // d4+
     new Armor("Harnois de cuir", 6),
-    new Armor("Manteau de cuir et bouclier rond", 4),
+    new Armor("Bouclier rond et manteau de cuir", 4),
     new Armor("Bouclier de bois", 0), // d0 ???
     new Armor("Cuir Bouilli", 6),
     new Armor("Cuirasse rouillée", 6),
-    new Armor("Tunique de cuir et toque", 4), //d4+
+    new Armor("Tunique de cuir et toque", 4, "+"), //d4+
     new Armor("Maille trouée", 6),
     new Armor("Cuir clouté", 6),
     new Armor("Cuirasse", 6),
-    new Armor("Petit bouclier et cuir renforcé", 4), // d4+
+    new Armor("Petit bouclier et cuir renforcé", 4, "+"), // d4+
     new Armor("Lorique mal ajustée", 6),
     new Armor("Cotte d'Anneaux", 8),
     new Armor("Tunique de Mailles", 8),
