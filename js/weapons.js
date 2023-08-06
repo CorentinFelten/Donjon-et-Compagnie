@@ -384,8 +384,8 @@ const SPECIAL_EQUIPEMENT = [
     new SpecialItem("Dent du Dragon Leogradonardicus III", [UNIQUE_ITEMS_BONUSES.dragonTooth]),
     new SpecialEquipement("Doigt d'Aarcarcerax", 4, [UNIQUE_ITEMS_BONUSES.lichFinger]),
     new SpecialEquipement("Cape de Vlad von Drakovitch", 6, [UNIQUE_ITEMS_BONUSES.drakovitchCape]),
-    new SpecialEquipement("Vieux carnet de notes d'Affallela (directeur de la Mercatique)", 6, [UNIQUE_ITEMS_BONUSES.affallelaNotebook]),
-    new SpecialEquipement("Ancienne Clef Universelle de Paiji (directeur de la Maintenance)", 8, [UNIQUE_ITEMS_BONUSES.paijiMasterKey]),
+    new SpecialEquipement("Vieux carnet de notes d'Affallela", 6, [UNIQUE_ITEMS_BONUSES.affallelaNotebook]),
+    new SpecialEquipement("Ancienne Clef Universelle de Paiji", 8, [UNIQUE_ITEMS_BONUSES.paijiMasterKey]),
     new SpecialItem("Baguette d'urgence", [UNIQUE_ITEMS_BONUSES.emergencyWand])
 ]
 

@@ -3,7 +3,8 @@ import {
     ARMORS,
     DISTANCE_WEAPONS,
     EQUIPEMENT,
-    TYPES
+    TYPES,
+    SPECIAL_EQUIPEMENT
  } from "./weapons.js";
 
 let elements = {};
@@ -158,6 +159,12 @@ function getEquipement() {
     const tablesToRoll = getTablesToRoll(DICE_VALUES);
     const managerRelation = getManagerRelation(Number(elements.anciennete.value), tablesToRoll);
 
+    if (managerRelation.dice20 == elements.mj.value) {
+        const specialItemRoll = Math.floor(Math.random() * (10 - 2 + 1)) + 2;
+        elements.extraItem = SPECIAL_EQUIPEMENT[specialItemRoll];
+    } else {
+        elements.extraItem = null;
+    }
     return [
         tablesToRoll.dice20.table[managerRelation.dice20],
         tablesToRoll.dice12.table[managerRelation.dice12],
@@ -167,30 +174,34 @@ function getEquipement() {
 }
 
 function writeRoll () { // Arme / distance / armure / equipement dans cet ordre
-    checkValue(elements.anciennete, 10);
-    checkValue(elements.mj, 20);
+    checkValue(elements.anciennete, 1, 10);
+    checkValue(elements.mj, 0, 20);
     const finalArray = getEquipement();
+    if (elements.extraItem) {
+        finalArray.push(elements.extraItem);
+    }
     const toWrite = [];
     for (const entry of finalArray) {
         if (Array.isArray(entry)) {
             for (const subEntry of entry) {
                 const mapEntry = {
-                    [TYPES.specialEquipement]: () => `${subEntry.name} Δ${subEntry.dice} : ${subEntry.extra}`,
                     [TYPES.equipement]: () => `${subEntry.name} Δ${subEntry.dice}`,
                     [TYPES.item]: () => `${subEntry.name}`,
-                    [TYPES.specialItem]: () => `${subEntry.name} : ${subEntry.attributes}`
                   };
           
                   if (mapEntry[subEntry.type]) {
                     toWrite.push(mapEntry[subEntry.type]());
                   }
             }
+            toWrite.push('');
         } else {
             const mapEntry = {
-                [TYPES.armor]: () => `${entry.name} ${entry.dice ? `Δ${entry.dice}${entry.extra ?? ""}` : ''}`,
-                [TYPES.rangeWeapon]: () => `${entry.name} d${entry.dice}`,
-                [TYPES.rangeWeaponWithAmmo]: () => `${entry.name} d${entry.dice}${entry.extra} (${entry.ammo.name} Δ${entry.ammo.dice})`,
-                [TYPES.weapon]: () => `${entry.name} d${entry.dice}${entry.hands === 3 ? `/d${entry.dice}*` : entry.hands === 2 ? `*` : ''}`
+                [TYPES.armor]: () => `${entry.name} ${entry.dice ? `Δ${entry.dice}${entry.extra ?? ""}` : ''}\n`,
+                [TYPES.rangeWeapon]: () => `${entry.name} d${entry.dice}\n`,
+                [TYPES.rangeWeaponWithAmmo]: () => `${entry.name} d${entry.dice}${entry.extra} (${entry.ammo.name} Δ${entry.ammo.dice})\n`,
+                [TYPES.weapon]: () => `${entry.name} d${entry.dice}${entry.hands === 3 ? `/d${entry.dice}*` : entry.hands === 2 ? `*` : ''}\n`,
+                [TYPES.specialEquipement]: () => `${entry.name} Δ${entry.dice}\n`,
+                [TYPES.specialItem]: () => `${entry.name}\n`
               };
         
               if (mapEntry[entry.type]) {
@@ -203,11 +214,11 @@ function writeRoll () { // Arme / distance / armure / equipement dans cet ordre
     }
 }
 
-function checkValue (toCheck, max) {
+function checkValue (toCheck, min, max) {
     if (toCheck.value > max) {
         toCheck.value = max;
     } else if (toCheck.value < 1) {
-        toCheck.value = 1; // TODO: allow MJ to roll with 0
+        toCheck.value = min; // TODO: allow MJ to roll with 0
     }
 }
 
