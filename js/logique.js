@@ -165,7 +165,7 @@ function getEquipement() {
     const managerRelation = getManagerRelation(Number(elements.anciennete.value), tablesToRoll);
 
     if (managerRelation.dice20 == elements.mj.value) {
-        const specialItemRoll = Math.floor(Math.random() * (10 - 2 + 1)) + 2;
+        const specialItemRoll = randomNumbers(2, 10);
         elements.extraItem = SPECIAL_EQUIPEMENT[specialItemRoll];
     } else {
         elements.extraItem = null;
