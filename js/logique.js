@@ -78,9 +78,7 @@ function getTablesToRoll () {
 }
 
 function randomNumbers(bottom, top) {
-    const result = bottom + crypto.getRandomValues(new Uint32Array(1))[0] % (top - bottom + 1);
-    console.log(result);
-    return result;
+    return bottom + crypto.getRandomValues(new Uint32Array(1))[0] % (top - bottom + 1);
 }
 
 function generateFourRandomNumbers () {
