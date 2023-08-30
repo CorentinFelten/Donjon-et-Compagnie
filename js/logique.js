@@ -77,12 +77,18 @@ function getTablesToRoll () {
     }
 }
 
+function randomNumbers(bottom, top) {
+    const result = bottom + crypto.getRandomValues(new Uint32Array(1))[0] % (top - bottom + 1);
+    console.log(result);
+    return result;
+}
+
 function generateFourRandomNumbers () {
     return {
-        dice20: Math.floor(Math.random() * (20 - 2 + 1)) + 2,
-        dice12: Math.floor(Math.random() * (12 - 2 + 1)) + 2,
-        dice10: Math.floor(Math.random() * (10 - 2 + 1)) + 2,
-        dice8: Math.floor(Math.random() * (8 - 2 + 1)) + 2
+        dice20: randomNumbers(2, 20),
+        dice12: randomNumbers(2, 12),
+        dice10: randomNumbers(2, 10),
+        dice8: randomNumbers(2, 8)
     }
 }
 
