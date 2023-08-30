@@ -245,25 +245,37 @@ const ARMORS = [
 
 const EQUIPEMENT = [
     [
-        new Equipement("Navets bouillis", 6)
+        new Equipement("Navets bouillis", 6),
+        new Item('Pince-monseigneur')
     ],
     [
-        new Equipement("Champignons et biscuits secs", 6)
+        new Equipement("Champignons et biscuits secs", 6),
+        new Item('Bonnet de berger')
     ],
     [
-        new Equipement("Fricassée de champignons", 6)
+        new Equipement("Fricassée de champignons", 6),
+        new Item('Ciseau à bois'),
+        new Item('Marteau')
     ],
     [
-        new Equipement("Tripes en gelée", 6)
+        new Equipement("Tripes en gelée", 6),
+        new Item('Aiguilles à tricot'),
+        new Item('Tricot')
     ],
     [
-        new Equipement("Chats fraîchement tués", 6)
+        new Equipement("Chats fraîchement tués", 6),
+        new Item('Mortier'),
+        new Item('Pilon')
     ],
     [
-        new Equipement("Navets crus et pâté de rat", 6)
+        new Equipement("Navets crus et pâté de rat", 6),
+        new Item('Bouilloire'),
+        new Item('Thé')
     ],
     [
-        new Equipement("Jarre de soupe d'escargots", 6)
+        new Equipement("Jarre de soupe d'escargots", 6),
+        new Item('Marteau'),
+        new Equipement('Pitons de fer', 6)
     ],
     [
         new Equipement("Pains de navet séché", 4),
@@ -283,16 +295,25 @@ const EQUIPEMENT = [
         new Item("Menottes")
     ],
     [
-        new Equipement("Boulettes de limon frit au riz", 6)
+        new Equipement("Boulettes de limon frit au riz", 6),
+        new Item('Toile'),
+        new Item('Gouaches'),
+        new Item('Pinceaux')
     ],
     [
-        new Equipement("Agneau confit et aubergines marinées", 6)
+        new Equipement("Agneau confit et aubergines marinées", 6),
+        new Item('Compas'),
+        new Item('Casquette de marin')
     ],
     [
-        new Equipement("Pain frais et fruits", 6)
+        new Equipement("Pain frais et fruits", 6),
+        new Item('Masque de sanglier'),
+        new Item('Appeaux')
     ],
     [
-        new Equipement("Rat vivant dans une cage", 6)
+        new Equipement("Rat vivant dans une cage", 6),
+        new Item('Parchemin'),
+        new Item('Fusain')
     ],
     [
         new Equipement("Saucisse au foie", 6),
@@ -314,13 +335,22 @@ const EQUIPEMENT = [
         new Item("Dés")
     ],
     [
-        new Equipement("Galette et poisson séché", 8)
+        new Equipement("Galette et poisson séché", 8),
+        new Item('Sachet de plâtre'),
+        new Item('Truelle')
     ],
     [
-        new Equipement("Terrine de sanglier et bière", 8)
+        new Equipement("Terrine de sanglier et bière", 8),
+        new Item('Flute à nez'),
+        new Item('Diapason'),
+        new Item('Partition')
     ],
     [
-        new Equipement("Conflit de canard au chou", 8)
+        new Equipement("Confit de canard au chou", 8),
+        new Item('Marmite'),
+        new Item('Fond de sauce'),
+        new Item('Aromates'),
+        new Item('Cuillère en bois')
     ],
     [
         new Equipement("Tourtes à l'oie épicées", 6),
