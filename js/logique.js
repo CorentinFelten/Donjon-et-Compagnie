@@ -184,7 +184,6 @@ function writeRoll () { // Arme / distance / armure / equipement dans cet ordre
     finalArray.push([new Equipement('Potion de Soins', 6), new Equipement('Torches', 4)]);
     const toWrite = [];
     for (const entry of finalArray) {
-        console.log(entry);
         if (Array.isArray(entry)) {
             for (const subEntry of entry) {
                 const mapEntry = {
