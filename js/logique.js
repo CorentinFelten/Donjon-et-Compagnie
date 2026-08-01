@@ -102,7 +102,7 @@ function rollEquipment() {
     const indices = getManagerModifiers(Number(elements.anciennete.value), tables);
 
     if (indices.dice20 === Number(elements.mj.value)) {
-        extraItem = SPECIAL_EQUIPEMENT[randomNumber(2, 10)];
+        extraItem = SPECIAL_EQUIPEMENT[randomNumber(0, SPECIAL_EQUIPEMENT.length - 1)];
     } else {
         extraItem = null;
     }
