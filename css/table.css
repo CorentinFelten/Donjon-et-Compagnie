@@ -1,80 +1,170 @@
-/* Set a maximum width for the page */
+:root {
+    --bg: #faf8f5;
+    --text: #2c2c2c;
+    --text-muted: #6b6560;
+    --border: #d4d0ca;
+    --accent: #5c4a32;
+    --accent-hover: #4a3a28;
+    --input-bg: #fff;
+    --result-bg: #f0ece6;
+    --special-accent: #a37b2c;
+    --special-bg: #f5eedd;
+    --radius: 6px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 2rem 1rem;
+    display: flex;
+    justify-content: center;
 }
 
-/* Style the page header */
+main {
+    max-width: 720px;
+    width: 100%;
+}
+
 h1 {
-  font-size: 36px;
-  text-align: center;
+    font-size: 1.75rem;
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
-/* Style the input fields and select boxes */
+.params {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.dice-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.field label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.375rem;
+    color: var(--text-muted);
+}
+
 input[type="number"],
 select {
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  width: 100%;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--input-bg);
+    color: var(--text);
+}
+
+input:focus,
+select:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+    border-color: var(--accent);
 }
 
 select option[value="null"] {
-  display: none;
+    display: none;
 }
 
-/* Style the content section */
-.content {
-  margin-top: 20px;
+.actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
 }
 
-/* Style the buttons container */
-.button-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 30%;
-  margin: 20px auto;
-}
-
-/* Style the buttons */
 button {
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  display: inline-block;
-  width: 40%;
+    padding: 0.625rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background 0.15s;
 }
 
-/* Style the table */
-table {
-  border-collapse: collapse;
-  width: 100%;
-  margin-bottom: 20px;
+#run {
+    background: var(--accent);
+    color: #fff;
 }
 
-th, td {
-  text-align: left;
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
+#run:hover {
+    background: var(--accent-hover);
 }
 
-/* Style the legend */
-h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
+#reset {
+    background: var(--border);
+    color: var(--text);
 }
 
-/* Style the tirage output */
-p#tirage {
-  font-size: 24px;
-  font-weight: bold;
-  white-space: pre-line;
+#reset:hover {
+    background: #c4c0ba;
+}
+
+#result .error {
+    color: #a33;
+    font-weight: 600;
+    text-align: center;
+}
+
+.result-category {
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    background: var(--result-bg);
+    border-radius: var(--radius);
+    border-left: 3px solid var(--accent);
+}
+
+.result-category.special {
+    border-left-color: var(--special-accent);
+    background: var(--special-bg);
+}
+
+.result-category h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin: 0 0 0.25rem;
+}
+
+.result-category .item {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.result-category .item + .item {
+    margin-top: 0.125rem;
+}
+
+@media (max-width: 600px) {
+    .params,
+    .dice-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    button {
+        width: 100%;
+    }
 }
