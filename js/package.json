@@ -1,7 +1,0 @@
-{
-    "name": "logique",
-    "version": "1.0",
-    "description": "Logique",
-    "main": "logique.js",
-    "type": "module"
-  }
