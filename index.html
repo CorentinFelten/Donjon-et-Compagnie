@@ -2,85 +2,84 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Générateur de paquetage pour Donjon & Cie — tirage aléatoire d'armes, armures et équipement.">
     <title>Paquetage Donjon & Cie</title>
     <link rel="stylesheet" href="./css/table.css">
 </head>
 <body>
+    <main>
+        <h1>Paquetage Donjon & Cie</h1>
+
+        <section class="params">
+            <div class="field">
+                <label for="mj">Jet du MJ</label>
+                <input type="number" id="mj" min="1" max="20">
+            </div>
+            <div class="field">
+                <label for="anciennete">Ancienneté</label>
+                <input type="number" id="anciennete" min="1" max="10" value="1">
+            </div>
+            <div class="field">
+                <label for="econome">Relation avec l'Économe</label>
+                <select id="econome">
+                    <option value="positive">Positive</option>
+                    <option value="neutre" selected>Neutre</option>
+                    <option value="negative">Négative</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="dice-grid">
+            <div class="field">
+                <label for="weapon">Armes au corps à corps</label>
+                <select id="weapon">
+                    <option value="null"></option>
+                    <option value="dice20">d20</option>
+                    <option value="dice12">d12</option>
+                    <option value="dice10">d10</option>
+                    <option value="dice8">d8</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="range">Armes à distance</label>
+                <select id="range">
+                    <option value="null"></option>
+                    <option value="dice20">d20</option>
+                    <option value="dice12">d12</option>
+                    <option value="dice10">d10</option>
+                    <option value="dice8">d8</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="armor">Armures</label>
+                <select id="armor">
+                    <option value="null"></option>
+                    <option value="dice20">d20</option>
+                    <option value="dice12">d12</option>
+                    <option value="dice10">d10</option>
+                    <option value="dice8">d8</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="equipement">Nourriture & Équipement</label>
+                <select id="equipement">
+                    <option value="null"></option>
+                    <option value="dice20">d20</option>
+                    <option value="dice12">d12</option>
+                    <option value="dice10">d10</option>
+                    <option value="dice8">d8</option>
+                </select>
+            </div>
+        </section>
+
+        <div class="actions">
+            <button id="run">Tirage</button>
+            <button id="reset">Reset</button>
+        </div>
+
+        <div id="result"></div>
+    </main>
     <script type="module" src="./js/logique.js"></script>
-    <h1>
-        Paquetage Donjon & Cie
-    </h1>
-    <div>
-        <div>
-            <h2>Jet du MJ</h2>
-           <input type="number" name="mj" id="mj" min="1" max="20" value="">
-        </div>
-        <div>
-            <h2>Ancienneté</h2>
-           <input type="number" name="anciennete" id="anciennete" min="1" max="10" value="1">
-        </div>
-
-        <div>
-            <h2>Relation avec l'Économe</h2>
-            <select name="econome" id="econome">
-                <option value="positive">Positive</option>
-                <option value="neutre" selected>Neutre</option>
-                <option value="negative">Négative</option>
-            </select>
-        </div>
-
-        <div class="content">
-            <div>
-                <h2>Armes au corps à corps</h2>
-                <select name="weapon" id="weapon">
-                    <option value="null"></option>
-                    <option value="dice20">d20</option>
-                    <option value="dice12">d12</option>
-                    <option value="dice10">d10</option>
-                    <option value="dice8">d8</option>
-                </select>
-            </div>
-            <div>
-                <h2>Armes à distance</h2>
-                <select name="range" id="range">
-                    <option value="null"></option>
-                    <option value="dice20">d20</option>
-                    <option value="dice12">d12</option>
-                    <option value="dice10">d10</option>
-                    <option value="dice8">d8</option>
-                </select>
-            </div>
-            <div>
-                <h2>Armures</h2>
-                <select name="armor" id="armor">
-                    <option value="null"></option>
-                    <option value="dice20">d20</option>
-                    <option value="dice12">d12</option>
-                    <option value="dice10">d10</option>
-                    <option value="dice8">d8</option>
-                </select>
-            </div>
-            <div>
-                <h2>Nourriture & Equipement</h2>
-                <select name="equipement" id="equipement">
-                    <option value="null"></option>
-                    <option value="dice20">d20</option>
-                    <option value="dice12">d12</option>
-                    <option value="dice10">d10</option>
-                    <option value="dice8">d8</option>
-                </select>
-            </div>
-        </div>
-       
-    </div>
-    <div class="button-container">
-        <button id="run">Tirage</button>
-        <button id="reset">Reset</button>
-    </div>
-    <p>Tirage sorti :</p>
-    <p id="tirage"></p>
 </body>
 </html>
