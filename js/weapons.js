@@ -14,7 +14,7 @@ const UNIQUE_ITEMS_BONUSES = {
     lichFinger: "Tue la créature vers qui le doigt est pointé. La liche sait instantanément que son doigt a été 'retrouvé'",
     drakovitchCape: "Permet de se transformer en : {1-3}: rat / {4-5}: chauve-souris / {6}: forme gazeuse",
     affallelaNotebook: "Faveurs de la Mercatique, utilisables uniquement dans les aires clients",
-    PaijiMasterKey: "Ouvre tous les coffres, portes, armoires et autres serrures du Donjon",
+    paijiMasterKey: "Ouvre tous les coffres, portes, armoires et autres serrures du Donjon",
     emergencyWand: "Téléporte l'utilisateur au palier des huiles lorsque la baguette est brisée"
 }
 
