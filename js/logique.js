@@ -1,100 +1,198 @@
 import {
-    WEAPONS,
-    ARMORS,
-    DISTANCE_WEAPONS,
-    EQUIPEMENT,
-    TYPES,
-    SPECIAL_EQUIPEMENT,
-    Equipement
- } from "./weapons.js";
+    WEAPONS, ARMORS, DISTANCE_WEAPONS, EQUIPEMENT,
+    TYPES, SPECIAL_EQUIPEMENT, Equipement
+} from "./weapons.js";
 
-let elements = {};
-
-const TABLE_DICTIONNARY = {
+const TABLE_MAP = {
     weapon: WEAPONS,
     range: DISTANCE_WEAPONS,
     armor: ARMORS,
     equipement: EQUIPEMENT
 };
 
-const DICE_VALUES = {
-    dice20: null,
-    dice12: null,
-    dice10: null,
-    dice8: null
+const CATEGORY_LABELS = {
+    weapon: 'Arme au corps à corps',
+    range: 'Arme à distance',
+    armor: 'Armure',
+    equipement: 'Nourriture & Équipement'
 };
 
-const DICES = ['weapon', 'range', 'armor', 'equipement'];
+const DICE_ORDER = ['dice20', 'dice12', 'dice10', 'dice8'];
+const CATEGORIES = ['weapon', 'range', 'armor', 'equipement'];
 
-function disableEnableOption (entryToChange, valueToChange, disable = true) {    
-    try {
-        if (JSON.parse(valueToChange) === null) {
-            return;
-        }
-    } catch (e) {
-        // do nothing
-    }
-    if (valueToChange !== null) {
-        DICES.filter(id => id !== entryToChange).map(idToChange => {
-            const elementToChange = document.getElementById(idToChange);
-            [...elementToChange.options].map(opt => {
-                if (opt.value === valueToChange && valueToChange !== null) {
-                    opt.disabled = disable;
-                } 
-            })
-        })
-    }
+const diceAssignment = { dice20: null, dice12: null, dice10: null, dice8: null };
+
+let elements = {};
+let extraItem = null;
+
+function randomNumber(min, max) {
+    return min + crypto.getRandomValues(new Uint32Array(1))[0] % (max - min + 1);
 }
 
-function initDices (elementId) {
-    const element = document.getElementById(elementId);
-    const {value} = element;
-    if (value !== null) {
-        const key = Object.keys(DICE_VALUES).find(k => DICE_VALUES[k] === elementId);
-        if (key) {
-            DICE_VALUES[key] = null;
-            disableEnableOption(elementId, key, false);
-        }
-        DICE_VALUES[value] = elementId;
-        disableEnableOption(elementId, value, true);
-        }
-    delete DICE_VALUES.null;
-}
-
-function getDiceDetails(dice) {
+function generateRolls() {
     return {
-        table: TABLE_DICTIONNARY[dice],
-        length: TABLE_DICTIONNARY[dice].length
+        dice20: randomNumber(2, 20),
+        dice12: randomNumber(2, 12),
+        dice10: randomNumber(2, 10),
+        dice8: randomNumber(2, 8)
+    };
+}
+
+function setOptionDisabled(excludeCategory, dieValue, disabled) {
+    if (dieValue === "null") return;
+    CATEGORIES.filter(id => id !== excludeCategory).forEach(id => {
+        [...document.getElementById(id).options].forEach(opt => {
+            if (opt.value === dieValue) opt.disabled = disabled;
+        });
+    });
+}
+
+function onDiceChange(categoryId) {
+    const value = document.getElementById(categoryId).value;
+
+    const previousDie = Object.keys(diceAssignment).find(k => diceAssignment[k] === categoryId);
+    if (previousDie) {
+        diceAssignment[previousDie] = null;
+        setOptionDisabled(categoryId, previousDie, false);
+    }
+
+    if (value !== "null") {
+        diceAssignment[value] = categoryId;
+        setOptionDisabled(categoryId, value, true);
     }
 }
 
-function getTablesToRoll () {
-    return {
-        dice20: getDiceDetails(DICE_VALUES.dice20),
-        dice12: getDiceDetails(DICE_VALUES.dice12),
-        dice10: getDiceDetails(DICE_VALUES.dice10),
-        dice8: getDiceDetails(DICE_VALUES.dice8)
+function clampInput(input, min, max) {
+    const val = Number(input.value);
+    if (val > max) input.value = max;
+    else if (val < min) input.value = min;
+}
+
+function getManagerModifiers(experience, tables) {
+    const relation = elements.econome.value;
+    const roll1 = generateRolls();
+
+    const applyExperience = (rolls) => {
+        const result = {};
+        DICE_ORDER.forEach(die => {
+            result[die] = Math.min(rolls[die] + experience, tables[die].length - 1);
+        });
+        return result;
+    };
+
+    if (relation === 'neutre') return applyExperience(roll1);
+
+    const roll2 = generateRolls();
+    const pick = relation === 'positive' ? Math.max : Math.min;
+    const combined = {};
+    DICE_ORDER.forEach(die => {
+        combined[die] = pick(roll1[die], roll2[die]);
+    });
+    return applyExperience(combined);
+}
+
+function rollEquipment() {
+    if (Object.values(diceAssignment).some(v => v === null)) return null;
+
+    const tables = {};
+    DICE_ORDER.forEach(die => {
+        tables[die] = TABLE_MAP[diceAssignment[die]];
+    });
+
+    const indices = getManagerModifiers(Number(elements.anciennete.value), tables);
+
+    if (indices.dice20 === Number(elements.mj.value)) {
+        extraItem = SPECIAL_EQUIPEMENT[randomNumber(2, 10)];
+    } else {
+        extraItem = null;
     }
+
+    const results = {};
+    DICE_ORDER.forEach(die => {
+        results[diceAssignment[die]] = tables[die][indices[die]];
+    });
+    return results;
 }
 
-function randomNumbers(bottom, top) {
-    return bottom + crypto.getRandomValues(new Uint32Array(1))[0] % (top - bottom + 1);
+function formatItem(item) {
+    const formatters = {
+        [TYPES.weapon]: () => `${item.name} d${item.dice}${item.hands === 3 ? `/d${item.dice}*` : item.hands === 2 ? '*' : ''}`,
+        [TYPES.rangeWeapon]: () => `${item.name} d${item.dice}`,
+        [TYPES.rangeWeaponWithAmmo]: () => `${item.name} d${item.dice}${item.extra} (${item.ammo.name} Δ${item.ammo.dice})`,
+        [TYPES.armor]: () => `${item.name}${item.dice ? ` Δ${item.dice}${item.extra ?? ''}` : ''}`,
+        [TYPES.equipement]: () => `${item.name} Δ${item.dice}`,
+        [TYPES.item]: () => item.name,
+        [TYPES.specialEquipement]: () => `${item.name} Δ${item.dice}`,
+        [TYPES.specialItem]: () => item.name
+    };
+    return formatters[item.type]?.() ?? item.name;
 }
 
-function generateFourRandomNumbers () {
-    return {
-        dice20: randomNumbers(2, 20),
-        dice12: randomNumbers(2, 12),
-        dice10: randomNumbers(2, 10),
-        dice8: randomNumbers(2, 8)
+function el(tag, className, text) {
+    const e = document.createElement(tag);
+    if (className) e.className = className;
+    if (text) e.textContent = text;
+    return e;
+}
+
+function renderCategory(label, items, special) {
+    const section = el('div', special ? 'result-category special' : 'result-category');
+    section.appendChild(el('h3', null, label));
+    (Array.isArray(items) ? items : [items]).forEach(item => {
+        section.appendChild(el('p', 'item', formatItem(item)));
+    });
+    return section;
+}
+
+function renderResults(results) {
+    const container = elements.result;
+    container.innerHTML = '';
+
+    CATEGORIES.forEach(category => {
+        if (results[category]) {
+            container.appendChild(renderCategory(CATEGORY_LABELS[category], results[category]));
+        }
+    });
+
+    if (extraItem) {
+        container.appendChild(renderCategory('Objet Spécial', extraItem, true));
     }
+
+    const defaults = [new Equipement('Potion de Soins', 6), new Equipement('Torches', 4)];
+    container.appendChild(renderCategory('Équipement de base', defaults));
 }
 
-function getElements () {
+function writeRoll() {
+    clampInput(elements.anciennete, 1, 10);
+    clampInput(elements.mj, 0, 20);
+
+    const results = rollEquipment();
+    if (!results) {
+        elements.result.innerHTML = '<p class="error">Tous les dés ne sont pas attribués</p>';
+        return;
+    }
+    renderResults(results);
+}
+
+function reset() {
+    elements.result.innerHTML = '';
+    elements.anciennete.value = 1;
+    elements.mj.value = '';
+    elements.econome.value = 'neutre';
+
+    CATEGORIES.forEach(id => {
+        elements[id].value = 'null';
+        DICE_ORDER.forEach(die => setOptionDisabled(id, die, false));
+    });
+    DICE_ORDER.forEach(die => { diceAssignment[die] = null; });
+    extraItem = null;
+}
+
+function init() {
     elements = {
         anciennete: document.getElementById('anciennete'),
         mj: document.getElementById('mj'),
-        tirage: document.getElementById('tirage'),
+        result: document.getElementById('result'),
         weapon: document.getElementById('weapon'),
         range: document.getElementById('range'),
         armor: document.getElementById('armor'),
@@ -103,148 +201,13 @@ function getElements () {
         run: document.getElementById('run'),
         reset: document.getElementById('reset')
     };
-}
-
-function reset () {
-    elements.tirage.innerText = '';
-    elements.anciennete.value = 1;
-    elements.mj.value = '';
-    elements.econome.value = 'neutre';
-    elements.weapon.value = null;
-    elements.armor.value = null;
-    elements.range.value = null;
-    elements.equipement.value = null;
-
-    DICES.map(diceEntry => {
-        Object.keys(DICE_VALUES).map(key => {
-            disableEnableOption(diceEntry, key, false);
-        })
-    })
-    Object.keys(DICE_VALUES).map(key => {
-        DICE_VALUES[key] = null;
-    })
-}
-
-function getManagerRelation (experience, tablesToRoll) {
-    const relation = elements.econome.value;
-    const firstRandomNumbers = generateFourRandomNumbers();
-    let secondRandomNumbers;
-    let finalObject;
-    switch (relation) {
-        case 'neutre':
-            finalObject = {
-                dice20: Math.min(firstRandomNumbers.dice20 + experience, tablesToRoll.dice20.length - 1),
-                dice12: Math.min(firstRandomNumbers.dice12 + experience, tablesToRoll.dice12.length - 1),
-                dice10: Math.min(firstRandomNumbers.dice10 + experience, tablesToRoll.dice10.length - 1),
-                dice8: Math.min(firstRandomNumbers.dice8 + experience, tablesToRoll.dice8.length - 1)
-            }
-        break;
-        case 'positive':
-        case 'negative': {
-            secondRandomNumbers = generateFourRandomNumbers();
-            const maxMinFunc = relation === 'positive' ? Math.max : Math.min;
-    
-            finalObject = {
-            dice20: Math.min(maxMinFunc(firstRandomNumbers.dice20, secondRandomNumbers.dice20) + experience, tablesToRoll.dice20.length - 1),
-            dice12: Math.min(maxMinFunc(firstRandomNumbers.dice12, secondRandomNumbers.dice12) + experience, tablesToRoll.dice12.length - 1),
-            dice10: Math.min(maxMinFunc(firstRandomNumbers.dice10, secondRandomNumbers.dice10) + experience, tablesToRoll.dice10.length - 1),
-            dice8: Math.min(maxMinFunc(firstRandomNumbers.dice8, secondRandomNumbers.dice8) + experience, tablesToRoll.dice8.length - 1)
-            };
-        }
-        break;
-    }
-    return finalObject;
-}
-
-function getEquipement() {
-    if (Object.values(DICE_VALUES).some(dice => dice === null)) {
-        elements.tirage.innerText = 'Tous les dés ne sont pas attribués'
-        return [];
-    }
-    const tablesToRoll = getTablesToRoll(DICE_VALUES);
-    const managerRelation = getManagerRelation(Number(elements.anciennete.value), tablesToRoll);
-
-    if (managerRelation.dice20 == elements.mj.value) {
-        const specialItemRoll = randomNumbers(2, 10);
-        elements.extraItem = SPECIAL_EQUIPEMENT[specialItemRoll];
-    } else {
-        elements.extraItem = null;
-    }
-    return [
-        tablesToRoll.dice20.table[managerRelation.dice20],
-        tablesToRoll.dice12.table[managerRelation.dice12],
-        tablesToRoll.dice10.table[managerRelation.dice10],
-        tablesToRoll.dice8.table[managerRelation.dice8]
-    ];
-}
-
-function writeRoll () { // Arme / distance / armure / equipement dans cet ordre
-    checkValue(elements.anciennete, 1, 10);
-    checkValue(elements.mj, 0, 20);
-    const finalArray = getEquipement();
-    if (elements.extraItem) {
-        finalArray.push(elements.extraItem);
-    }
-    finalArray.push([new Equipement('Potion de Soins', 6), new Equipement('Torches', 4)]);
-    const toWrite = [];
-    for (const entry of finalArray) {
-        if (Array.isArray(entry)) {
-            for (const subEntry of entry) {
-                const mapEntry = {
-                    [TYPES.equipement]: () => `${subEntry.name} Δ${subEntry.dice}`,
-                    [TYPES.item]: () => `${subEntry.name}`,
-                  };
-          
-                  if (mapEntry[subEntry.type]) {
-                    toWrite.push(mapEntry[subEntry.type]());
-                  }
-            }
-            toWrite.push('');
-        } else {
-            const mapEntry = {
-                [TYPES.armor]: () => `${entry.name} ${entry.dice ? `Δ${entry.dice}${entry.extra ?? ""}` : ''}\n`,
-                [TYPES.rangeWeapon]: () => `${entry.name} d${entry.dice}\n`,
-                [TYPES.rangeWeaponWithAmmo]: () => `${entry.name} d${entry.dice}${entry.extra} (${entry.ammo.name} Δ${entry.ammo.dice})\n`,
-                [TYPES.weapon]: () => `${entry.name} d${entry.dice}${entry.hands === 3 ? `/d${entry.dice}*` : entry.hands === 2 ? `*` : ''}\n`,
-                [TYPES.specialEquipement]: () => `${entry.name} Δ${entry.dice}\n`,
-                [TYPES.specialItem]: () => `${entry.name}\n`
-              };
-        
-              if (mapEntry[entry.type]) {
-                toWrite.push(mapEntry[entry.type]());
-              }
-        }
-    }
-    if (toWrite.length > 0) {
-        elements.tirage.innerText = toWrite.join('\n');
-    }
-}
-
-function checkValue (toCheck, min, max) {
-    if (toCheck.value > max) {
-        toCheck.value = max;
-    } else if (toCheck.value < 1) {
-        toCheck.value = min; // TODO: allow MJ to roll with 0
-    }
-}
-
-function init () {
-    getElements();
 
     reset();
-
     elements.run.onclick = writeRoll;
     elements.reset.onclick = reset;
-
-    DICES.forEach((dice => {
-        elements[dice].onchange = () => {
-            initDices(dice);
-        }})
-    );
+    CATEGORIES.forEach(id => {
+        elements[id].onchange = () => onDiceChange(id);
+    });
 }
 
-
 init();
-
-
-// run npx live-server in folder to start
